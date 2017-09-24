@@ -10,8 +10,15 @@ def location_for(place, fake_version = nil)
   end
 end
 
+if ENV['PUPPET_VERSION']
+  gem 'puppet', ENV['PUPPET_VERSION']
+else
+  gem 'puppet', '~> 4.0',   :require => false if RUBY_VERSION < '2.4.0'
+  gem 'puppet', '~> 5.0',   :require => false if RUBY_VERSION >= '2.4.0'
+end
+
+
 group :test do
-  gem 'puppet', ENV['PUPPET_VERSION'] || '~> 4.0'
   gem 'semantic_puppet', '>= 1.0.0',                                :require => false
   gem 'puppetlabs_spec_helper', '~> 2.2.0',                         :require => false
   gem 'rspec-puppet', '~> 2.5',                                     :require => false
@@ -51,8 +58,6 @@ group :development do
 end
 
 group :system_tests do
-  #gem 'beaker',                        :require => false
-  #gem 'beaker-rspec',                  :require => false
   if beaker_version = ENV['BEAKER_VERSION']
     gem 'beaker', *location_for(beaker_version)
   end
