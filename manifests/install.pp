@@ -1,6 +1,6 @@
-# == Class partekflow::install
+# @api private
 #
-# This class is called from partekflow for install.
+# This class is called from partekflow for installing the Partek Flow application.
 #
 class partekflow::install {
   if $::partekflow::package_manage {

@@ -1,7 +1,6 @@
-# == Class partekflow::service
+# @api private
 #
-# This class is meant to be called from partekflow.
-# It ensure the service is running.
+# This class is meant to be called from partekflow to manage the partekflowd service.
 #
 class partekflow::service {
 

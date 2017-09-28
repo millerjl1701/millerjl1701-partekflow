@@ -1,4 +1,4 @@
-# == Class partekflow::config
+# @api private
 #
 # This class is called from partekflow for service config.
 #
