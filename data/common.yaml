@@ -1,4 +1,5 @@
 ---
 
+partekflow::package_ensure: 'present'
 partekflow::package_name: 'partekflow'
 partekflow::service_name: 'partekflowd'

@@ -5,6 +5,6 @@
 class partekflow::install {
 
   package { $::partekflow::package_name:
-    ensure => present,
+    ensure => $::partekflow::package_ensure,
   }
 }

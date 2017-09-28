@@ -20,6 +20,26 @@ describe 'partekflow' do
 
           it { is_expected.to contain_service('partekflowd') }
         end
+
+        context "partekflow class with package_ensure is set to latest" do
+          let(:params){
+            {
+              :package_ensure => 'latest',
+            }
+          }
+
+          it { is_expected.to contain_package('partekflow').with_ensure('latest') }
+        end
+
+        context "partekflow class with package_ensure is set to version" do
+          let(:params){
+            {
+              :package_ensure => '1.1.1',
+            }
+          }
+
+          it { is_expected.to contain_package('partekflow').with_ensure('1.1.1') }
+        end
       end
     end
   end
