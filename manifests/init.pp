@@ -11,14 +11,21 @@
 #   e.g. "Specify one or more upstream ntp servers as an array."
 #
 class partekflow (
-  $package_name = $::partekflow::params::package_name,
-  $service_name = $::partekflow::params::service_name,
-) inherits ::partekflow::params {
+  $package_name,
+  $service_name,
+) {
 
   # validate parameters here
 
-  class { '::partekflow::install': } ->
-  class { '::partekflow::config': } ~>
-  class { '::partekflow::service': } ->
-  Class['::partekflow']
+  case $::operatingsystem {
+    'RedHat', 'CentOS': {
+      class { '::partekflow::install': } ->
+      class { '::partekflow::config': } ~>
+      class { '::partekflow::service': } ->
+      Class['::partekflow']
+    }
+    default: {
+      fail("${::operatingsystem} not supported")
+    }
+  }
 }

@@ -11,13 +11,14 @@ describe 'partekflow' do
         context "partekflow class without any parameters" do
           it { is_expected.to compile.with_all_deps }
 
-          it { is_expected.to contain_class('partekflow::params') }
+          it { is_expected.to contain_class('partekflow') }
           it { is_expected.to contain_class('partekflow::install').that_comes_before('Class[partekflow::config]') }
           it { is_expected.to contain_class('partekflow::config') }
           it { is_expected.to contain_class('partekflow::service').that_subscribes_to('Class[partekflow::config]') }
 
-          it { is_expected.to contain_service('partekflow') }
           it { is_expected.to contain_package('partekflow').with_ensure('present') }
+
+          it { is_expected.to contain_service('partekflowd') }
         end
       end
     end
