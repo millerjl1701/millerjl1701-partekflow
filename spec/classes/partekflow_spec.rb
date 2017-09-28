@@ -40,6 +40,16 @@ describe 'partekflow' do
 
           it { is_expected.to contain_package('partekflow').with_ensure('1.1.1') }
         end
+
+        context "partekflow class with package_manage is set to false" do
+          let(:params){
+            {
+              :package_manage => false,
+            }
+          }
+
+          it { is_expected.to_not contain_package('partekflow') }
+        end
       end
     end
   end
