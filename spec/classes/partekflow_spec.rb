@@ -21,6 +21,7 @@ describe 'partekflow' do
 
           it { is_expected.to contain_service('partekflowd').with(
             'ensure' => 'running',
+            'enable' => 'true',
           ) }
         end
 
@@ -62,6 +63,16 @@ describe 'partekflow' do
           }
 
           it { is_expected.to contain_package('foo').with_ensure('present') }
+        end
+
+        context "partekflow class with service_enable set to false" do
+          let(:params){
+            {
+              :service_enable => false,
+            }
+          }
+
+          it { is_expected.to contain_service('partekflowd').with_enable('false') }
         end
 
         context "partekflow class with service_ensure set to stopped" do
