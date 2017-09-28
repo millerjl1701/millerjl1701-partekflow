@@ -18,10 +18,15 @@ class partekflow (
 
   case $::operatingsystem {
     'RedHat', 'CentOS': {
-      class { '::partekflow::install': } ->
-      class { '::partekflow::config': } ~>
-      class { '::partekflow::service': } ->
-      Class['::partekflow']
+
+      contain partekflow::install
+      contain partekflow::config
+      contain partekflow::service
+
+      Class['::partekflow::install']
+      -> Class['partekflow::config']
+      ~> Class['partekflow::service']
+
     }
     default: {
       fail("${::operatingsystem} not supported")
