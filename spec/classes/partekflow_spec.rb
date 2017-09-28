@@ -19,7 +19,9 @@ describe 'partekflow' do
 
           it { is_expected.to contain_package('partekflow').with_ensure('present') }
 
-          it { is_expected.to contain_service('partekflowd') }
+          it { is_expected.to contain_service('partekflowd').with(
+            'ensure' => 'running',
+          ) }
         end
 
         context "partekflow class with package_ensure is set to latest" do
@@ -50,6 +52,26 @@ describe 'partekflow' do
           }
 
           it { is_expected.to_not contain_package('partekflow') }
+        end
+
+        context "partekflow class with package_name set to foo" do
+          let(:params){
+            {
+              :package_name => 'foo',
+            }
+          }
+
+          it { is_expected.to contain_package('foo').with_ensure('present') }
+        end
+
+        context "partekflow class with service_name set to foo" do
+          let(:params){
+            {
+              :service_name => 'foo',
+            }
+          }
+
+          it { is_expected.to contain_service('foo') }
         end
       end
     end
