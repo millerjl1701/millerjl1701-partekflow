@@ -1,18 +1,13 @@
 # Class: partekflow
 # ===========================
 #
-# Full description of class partekflow here.
+# Main class that includes all other classes for manangement of the Partek Flow application.
 #
-# Parameters
-# ----------
-#
-# * `sample parameter`
-#   Explanation of what this parameter affects and what it defaults to.
-#   e.g. "Specify one or more upstream ntp servers as an array."
-#
+# @param package_name [String] Specified the name of the package to install. Devault value: partekflow.
+# @param service_name [String] Specifies the name of the service to manage. Default value: partekflowd.
 class partekflow (
-  $package_name,
-  $service_name,
+  String $package_name,
+  String $service_name,
 ) {
 
   # validate parameters here

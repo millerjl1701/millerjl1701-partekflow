@@ -1,3 +1,5 @@
 2017-09-24 Release 0.1.0
 - Initial commit of files from puppet module generate using millerjl1701/puppet-skeleton.
 - Modified files after testing with the puppet-skeleton as there were some errors in the initial push.
+- Changed files for use of hiera 5 and removed params.pp file
+- Modified service_name parameter to partekflowd to reflect actual service name installed
