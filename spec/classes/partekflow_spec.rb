@@ -64,6 +64,26 @@ describe 'partekflow' do
           it { is_expected.to contain_package('foo').with_ensure('present') }
         end
 
+        context "partekflow class with service_ensure set to stopped" do
+          let(:params){
+            {
+              :service_ensure => 'stopped',
+            }
+          }
+
+          it { is_expected.to contain_service('partekflowd').with_ensure('stopped') }
+        end
+
+        context "partekflow class with service_ensure set to fooed" do
+          let(:params){
+            {
+              :service_ensure => 'fooed',
+            }
+          }
+
+          it { expect { is_expected.to contain_service('partekflowd') }.to raise_error(Puppet::Error, /parameter 'service_ensure' expects a match for Enum/) }
+        end
+
         context "partekflow class with service_name set to foo" do
           let(:params){
             {

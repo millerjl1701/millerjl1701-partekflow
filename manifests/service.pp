@@ -5,7 +5,7 @@
 class partekflow::service {
 
   service { $::partekflow::service_name:
-    ensure     => running,
+    ensure     => $::partekflow::service_ensure,
     enable     => true,
     hasstatus  => true,
     hasrestart => true,
