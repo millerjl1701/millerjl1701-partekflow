@@ -17,11 +17,29 @@ describe 'partekflow' do
           it { is_expected.to contain_class('partekflow::install').that_comes_before('Class[partekflow::config]') }
           it { is_expected.to contain_class('partekflow::service').that_subscribes_to('Class[partekflow::config]') }
 
+          it { is_expected.to contain_group('flowuser').with(
+            'ensure'   => 'present',
+            'gid' => '499',
+          ) }
+
+          it { is_expected.to contain_user('flow').with(
+            'ensure'     => 'present',
+            'uid'        => '499',
+            'gid'        => '499',
+            'system'     => true,
+            'comment'    => 'Partek Flow daemon',
+            'managehome' => true,
+            'home'       => '/home/flow',
+            'shell'      => '/bin/sh',
+          ) }
+
           it { is_expected.to contain_package('partekflow').with_ensure('present') }
 
           it { is_expected.to contain_service('partekflowd').with(
-            'ensure' => 'running',
-            'enable' => 'true',
+            'ensure'     => 'running',
+            'enable'     => 'true',
+            'hasstatus'  => 'true',
+            'hasrestart' => 'true',
           ) }
         end
 
@@ -43,16 +61,6 @@ describe 'partekflow' do
           }
 
           it { is_expected.to contain_package('partekflow').with_ensure('1.1.1') }
-        end
-
-        context "partekflow class with package_manage is set to false" do
-          let(:params){
-            {
-              :package_manage => false,
-            }
-          }
-
-          it { is_expected.to_not contain_package('partekflow') }
         end
 
         context "partekflow class with package_name set to foo" do
@@ -103,6 +111,79 @@ describe 'partekflow' do
           }
 
           it { is_expected.to contain_service('foo') }
+        end
+
+        context "partekflow class with user_comment set to foofighter" do
+          let(:params){
+            {
+              :user_comment => 'foofighter',
+            }
+          }
+
+          it { is_expected.to contain_user('flow').with_comment('foofighter') }
+        end
+
+        context "partekflow class with user_ensure set to absent" do
+          let(:params){
+            {
+              :user_ensure => 'absent',
+            }
+          }
+
+          it { is_expected.to contain_group('flowuser').with_ensure('absent') }
+          it { is_expected.to contain_user('flow').with_ensure('absent') }
+        end
+
+        context "partekflow class with user_ensure set to foo" do
+          let(:params){
+            {
+              :user_ensure => 'foo',
+            }
+          }
+
+          it { expect { is_expected.to contain_group('flowuser') }.to raise_error(Puppet::Error, /parameter 'user_ensure' expects a match for Enum/) }
+          it { expect { is_expected.to contain_user('flow') }.to raise_error(Puppet::Error, /parameter 'user_ensure' expects a match for Enum/) }
+        end
+
+        context "partekflow class with user_gid set to 400" do
+          let(:params){
+            {
+              :user_gid => 400,
+            }
+          }
+
+          it { is_expected.to contain_group('flowuser').with_gid('400') }
+          it { is_expected.to contain_user('flow').with_gid('400') }
+        end
+
+        context "partekflow class with user_gid set to 1000" do
+          let(:params){
+            {
+              :user_gid => 1000,
+            }
+          }
+
+          it { expect { is_expected.to contain_group('flowuser') }.to raise_error(Puppet::Error, /'user_gid' expects an Integer\[1, 499\] value, got Integer\[1000, 1000\]/) }
+        end
+
+        context "partekflow class with user_uid set to 400" do
+          let(:params){
+            {
+              :user_uid => 400,
+            }
+          }
+
+          it { is_expected.to contain_user('flow').with_uid('400') }
+        end
+
+        context "partekflow class with user_uid set to 1000" do
+          let(:params){
+            {
+              :user_uid => 1000,
+            }
+          }
+
+          it { expect { is_expected.to contain_user('flow') }.to raise_error(Puppet::Error, /'user_uid' expects an Integer\[1, 499\] value, got Integer\[1000, 1000\]/) }
         end
       end
     end

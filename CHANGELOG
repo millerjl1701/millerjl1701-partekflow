@@ -3,3 +3,8 @@
 - Modified files after testing with the puppet-skeleton as there were some errors in the initial push.
 - Changed files for use of hiera 5 and removed params.pp file
 - Modified service_name parameter to partekflowd to reflect actual service name installed
+- Added parameter data types and puppet strings documentation
+- Added package_ensure parameter to manage the ensure parameter of the partekflow package resource.
+- Added service_ensure parameter to manage the ensure parameter on the partekflowd service resource.
+- Added service_enable parameter to enable or disable the partekflowd service on boot
+- Added user and group for partekflowd service.

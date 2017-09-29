@@ -13,13 +13,26 @@ describe 'partekflow class' do
       apply_manifest(pp, :catch_changes  => true)
     end
 
+    describe group('flowuser') do
+      it { should exist }
+      it { should have_gid 499 }
+    end
+
+    describe user('flow') do
+      it { should exist }
+      it { should have_uid 499 }
+      it { should belong_to_primary_group 'flowuser' }
+      it { should have_home_directory '/home/flow' }
+      it { should have_login_shell '/bin/sh' }
+    end
+
     describe package('partekflow') do
-      it { is_expected.to be_installed }
+      it { should be_installed }
     end
 
     describe service('partekflowd') do
-      it { is_expected.to be_enabled }
-      it { is_expected.to be_running }
+      it { should be_enabled }
+      it { should be_running }
     end
   end
 end
