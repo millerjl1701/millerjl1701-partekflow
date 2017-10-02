@@ -178,6 +178,7 @@ describe 'partekflow' do
             }
           }
           it { is_expected.to contain_group('foos') }
+          it { is_expected.to contain_user('flow').with_require('Group[foos]') }
         end
 
         context "partekflow class with user_home set to /opt/flow" do
@@ -215,6 +216,7 @@ describe 'partekflow' do
             'home'       => '/home/foo',
             'shell'      => '/bin/sh',
           ) }
+          it { is_expected.to contain_package('partekflow').with_require('User[foo]') }
         end
 
         context "partekflow class with user_shell set to /bin/bash" do
