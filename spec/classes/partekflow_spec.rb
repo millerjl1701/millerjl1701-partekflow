@@ -196,7 +196,7 @@ describe 'partekflow' do
               :user_home => '../flow',
             }
           }
-          it { expect { is_expected.to contain_user('flow') }.to raise_error(Puppet::Error, /parameter 'user_home' expects a match for Variant\[Stdlib::Windowspath = Pattern/) }
+          it { expect { is_expected.to contain_user('flow') }.to raise_error(Puppet::Error, /Error while evaluating a Resource Statement, Class/) }
         end
 
         context "partekflow class with user_name set to foo" do
@@ -236,7 +236,7 @@ describe 'partekflow' do
             }
           }
 
-          it { expect { is_expected.to contain_user('flow') }.to raise_error(Puppet::Error, /parameter 'user_shell' expects a match for Variant\[Stdlib::Windowspath = Pattern/) }
+          it { expect { is_expected.to contain_user('flow') }.to raise_error(Puppet::Error, /Error while evaluating a Resource Statement, Class/) }
         end
 
         context "partekflow class with user_uid set to 400" do
