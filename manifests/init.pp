@@ -8,6 +8,7 @@
 # @param service_enable [Boolean] Whether to enable the partekflowd service at boot. Default value: true.
 # @param service_ensure [Enum['running', 'stopped']] Whether the patrekflowd service should be running. Default value: 'running'.
 # @param service_name [String] Specifies the name of the service to manage. Default value: partekflowd.
+# @param user_comment [String] Specifies User ID info for the user account. Default: Partek Flow daemon.
 # @param user_ensure [Enum['present', 'absent']] Whether the parteflowd user and group should be present. Default value: true
 # @param user_gid [Integer[1, 499]] The gid of the group to create for the partekflowd server. Default value: 499.
 # @param user_groupname [String] The name of the group to create for the partekdflow server. Default value: flowuser
