@@ -34,9 +34,57 @@ describe 'partekflow' do
             'require'    => 'Group[flowuser]',
           ) }
 
+          it { is_expected.to contain_file('partek-public.key').with(
+            'ensure' => 'present',
+            'path'   => '/etc/pki/rpm-gpg/partek-public.key',
+            'selrange' => 's0',
+            'selrole' => 'object_r',
+            'seltype' => 'cert_t',
+            'seluser' => 'system_u',
+            'source' => 'puppet:///modules/partekflow/partek-public.key',
+          ) }
+
+          it { is_expected.to contain_gpg_key('partek-public.key').with_path('/etc/pki/rpm-gpg/partek-public.key') }
+
+          it { is_expected.to contain_yumrepo('partekrepo-stable').with(
+            'ensure'   => 'present',
+            'baseurl'  => 'http://packages.partek.com/redhat/stable/$basearch',
+            'enabled'  => 1,
+            'gpgcheck' => 0,
+            'gpgkey'   => 'file:///etc/pki/rpm-gpg/partek-public.key',
+            'require'  => 'Gpg_key[partek-public.key]',
+          ) }
+
+          it { is_expected.to contain_yumrepo('partekrepo-noarch-stable').with(
+            'ensure'   => 'present',
+            'baseurl'  => 'http://packages.partek.com/redhat/stable/noarch',
+            'enabled'  => 1,
+            'gpgcheck' => 0,
+            'gpgkey'   => 'file:///etc/pki/rpm-gpg/partek-public.key',
+            'require'  => 'Gpg_key[partek-public.key]',
+          ) }
+
+          it { is_expected.to contain_yumrepo('partekrepo-unstable').with(
+            'ensure'   => 'present',
+            'baseurl'  => 'http://packages.partek.com/redhat/unstable/$basearch',
+            'enabled'  => 0,
+            'gpgcheck' => 0,
+            'gpgkey'   => 'file:///etc/pki/rpm-gpg/partek-public.key',
+            'require'  => 'Gpg_key[partek-public.key]',
+          ) }
+
+          it { is_expected.to contain_yumrepo('partekrepo-noarch-unstable').with(
+            'ensure'   => 'present',
+            'baseurl'  => 'http://packages.partek.com/redhat/unstable/noarch',
+            'enabled'  => 0,
+            'gpgcheck' => 0,
+            'gpgkey'   => 'file:///etc/pki/rpm-gpg/partek-public.key',
+            'require'  => 'Gpg_key[partek-public.key]',
+          ) }
+
           it { is_expected.to contain_package('partekflow').with(
             'ensure'  => 'present',
-            'require' => 'User[flow]',
+            'require' => '[User[flow]{:name=>"flow"}, Yumrepo[partekrepo-stable]{:name=>"partekrepo-stable"}, Yumrepo[partekrepo-noarch-stable]{:name=>"partekrepo-noarch-stable"}]',
           ) }
 
           it { is_expected.to contain_service('partekflowd').with(
@@ -216,7 +264,7 @@ describe 'partekflow' do
             'home'       => '/home/foo',
             'shell'      => '/bin/sh',
           ) }
-          it { is_expected.to contain_package('partekflow').with_require('User[foo]') }
+          it { is_expected.to contain_package('partekflow').with_require('[User[foo]{:name=>"foo"}, Yumrepo[partekrepo-stable]{:name=>"partekrepo-stable"}, Yumrepo[partekrepo-noarch-stable]{:name=>"partekrepo-noarch-stable"}]') }
         end
 
         context "partekflow class with user_shell set to /bin/bash" do

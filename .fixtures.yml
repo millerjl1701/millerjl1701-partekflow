@@ -1,5 +1,6 @@
 fixtures:
   repositories:
+    gpg_key: "https://github.com/treydock/puppet-gpg_key.git"
     stdlib: "https://github.com/puppetlabs/puppetlabs-stdlib.git"
   symlinks:
     partekflow: "#{source_dir}"

@@ -8,3 +8,4 @@
 - Added service_ensure parameter to manage the ensure parameter on the partekflowd service resource.
 - Added service_enable parameter to enable or disable the partekflowd service on boot
 - Added user and group for partekflowd service.
+- Added yum repository management to match current partekflow.repo file.

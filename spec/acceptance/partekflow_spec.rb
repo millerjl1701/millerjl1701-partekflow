@@ -26,6 +26,14 @@ describe 'partekflow class' do
       it { should have_login_shell '/bin/sh' }
     end
 
+    describe file('/etc/pki/rpm-gpg/partek-public.key') do
+      it { should be_file }
+      it { should be_owned_by 'root' }
+      it { should be_grouped_into 'root' }
+      it { should be_mode 644 }
+      its(:md5sum) { should eq 'c3cfb0039826913eec0a8201c7ce1ccb' }
+    end
+
     describe package('partekflow') do
       it { should be_installed }
     end
