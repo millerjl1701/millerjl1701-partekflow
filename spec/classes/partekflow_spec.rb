@@ -31,9 +31,13 @@ describe 'partekflow' do
             'managehome' => true,
             'home'       => '/home/flow',
             'shell'      => '/bin/sh',
+            'require'    => 'Group[flowuser]',
           ) }
 
-          it { is_expected.to contain_package('partekflow').with_ensure('present') }
+          it { is_expected.to contain_package('partekflow').with(
+            'ensure'  => 'present',
+            'require' => 'User[flow]',
+          ) }
 
           it { is_expected.to contain_service('partekflowd').with(
             'ensure'     => 'running',
@@ -70,6 +74,7 @@ describe 'partekflow' do
             }
           }
 
+          it { is_expected.to_not contain_package('partekflow') }
           it { is_expected.to contain_package('foo').with_ensure('present') }
         end
 
@@ -164,6 +169,72 @@ describe 'partekflow' do
           }
 
           it { expect { is_expected.to contain_group('flowuser') }.to raise_error(Puppet::Error, /'user_gid' expects an Integer\[1, 499\] value, got Integer\[1000, 1000\]/) }
+        end
+
+        context "partekflow class with user_groupname set to foos" do
+          let(:params){
+            {
+              :user_groupname => 'foos',
+            }
+          }
+          it { is_expected.to contain_group('foos') }
+        end
+
+        context "partekflow class with user_home set to /opt/flow" do
+          let(:params){
+            {
+              :user_home => '/opt/flow',
+            }
+          }
+          it { is_expected.to contain_user('flow').with_home('/opt/flow') }
+        end
+
+        context "partekflow class with user_home set to relative path ../flow" do
+          let(:params){
+            {
+              :user_home => '../flow',
+            }
+          }
+          it { expect { is_expected.to contain_user('flow') }.to raise_error(Puppet::Error, /parameter 'user_home' expects a match for Variant\[Stdlib::Windowspath = Pattern/) }
+        end
+
+        context "partekflow class with user_name set to foo" do
+          let(:params){
+            {
+              :user_name => 'foo',
+              :user_home => '/home/foo',
+            }
+          }
+          it { is_expected.to contain_user('foo').with(
+            'ensure'     => 'present',
+            'uid'        => '499',
+            'gid'        => '499',
+            'system'     => true,
+            'comment'    => 'Partek Flow daemon',
+            'managehome' => true,
+            'home'       => '/home/foo',
+            'shell'      => '/bin/sh',
+          ) }
+        end
+
+        context "partekflow class with user_shell set to /bin/bash" do
+          let(:params){
+            {
+              :user_shell => '/bin/bash',
+            }
+          }
+
+          it { is_expected.to contain_user('flow').with_shell('/bin/bash') }
+        end
+
+        context "partekflow class with user_shell set to bash" do
+          let(:params){
+            {
+              :user_shell => 'bash',
+            }
+          }
+
+          it { expect { is_expected.to contain_user('flow') }.to raise_error(Puppet::Error, /parameter 'user_shell' expects a match for Variant\[Stdlib::Windowspath = Pattern/) }
         end
 
         context "partekflow class with user_uid set to 400" do
