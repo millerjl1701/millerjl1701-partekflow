@@ -16,8 +16,10 @@ class partekflow::install {
     managehome => $partekflow::user_managehome,
     home       => $partekflow::user_home,
     shell      => $partekflow::user_shell,
+    require    => Group[$::partekflow::user_groupname],
   }
   package { $::partekflow::package_name:
-    ensure => $::partekflow::package_ensure,
+    ensure  => $::partekflow::package_ensure,
+    require => User[$::partekflow::user_name],
   }
 }
