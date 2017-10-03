@@ -8,7 +8,7 @@ describe 'partekflow' do
           facts
         end
 
-        context "partekflow class without any parameters" do
+        context "partekflow class without any parameters changed from defaults" do
           it { is_expected.to compile.with_all_deps }
 
           it { is_expected.to contain_class('partekflow::install') }
@@ -86,6 +86,28 @@ describe 'partekflow' do
             'ensure'  => 'present',
             'require' => '[User[flow]{:name=>"flow"}, Yumrepo[partekrepo-stable]{:name=>"partekrepo-stable"}, Yumrepo[partekrepo-noarch-stable]{:name=>"partekrepo-noarch-stable"}]',
           ) }
+
+          it { is_expected.to contain_file('/opt/partek_flow/temp').with(
+            'ensure' => 'directory',
+            'owner'  => 'flow',
+            'group'  => 'flowuser',
+            'mode'   => '0755',
+          ) }
+          it { is_expected.to contain_file('/etc/partekflow.conf').with(
+            'ensure' => 'present',
+            'owner'  => 'root',
+            'group'  => 'root',
+            'mode'   => '0644',
+          ) }
+          it { is_expected.to contain_file('/etc/partekflow.conf').with_content(/^FLOWuser=flow$/) }
+          it { is_expected.to contain_file('/etc/partekflow.conf').with_content(/^FLOWhome=\/home\/flow$/) }
+          it { is_expected.to contain_file('/etc/partekflow.conf').with_content(/^FLOWbase=\/opt\/partek_flow$/) }
+          it { is_expected.to contain_file('/etc/partekflow.conf').with_content(/^HTTP_PORT=8080$/) }
+          it { is_expected.to contain_file('/etc/partekflow.conf').with_content(/^HTTPS_PORT=10443$/) }
+          it { is_expected.to contain_file('/etc/partekflow.conf').with_content(/^SHUTDOWN_PORT=8015$/) }
+          it { is_expected.to contain_file('/etc/partekflow.conf').with_content(/^AJP_PORT=8009$/) }
+          it { is_expected.to contain_file('/etc/partekflow.conf').with_content(/^logfil=\"\$FLOWbase\"\/logs\/daemon.log$/) }
+          it { is_expected.to contain_file('/etc/partekflow.conf').with_content(/^CATALINA_TMPDIR=\/opt\/partek_flow\/temp$/) }
 
           it { is_expected.to contain_service('partekflowd').with(
             'ensure'     => 'running',
@@ -225,8 +247,10 @@ describe 'partekflow' do
               :user_groupname => 'foos',
             }
           }
+            
           it { is_expected.to contain_group('foos') }
           it { is_expected.to contain_user('flow').with_require('Group[foos]') }
+          it { is_expected.to contain_file('/opt/partek_flow/temp').with_group('foos') }
         end
 
         context "partekflow class with user_home set to /opt/flow" do
@@ -235,7 +259,36 @@ describe 'partekflow' do
               :user_home => '/opt/flow',
             }
           }
+
           it { is_expected.to contain_user('flow').with_home('/opt/flow') }
+          it { is_expected.to contain_file('/etc/partekflow.conf').with_content(/^FLOWhome=\/opt\/flow$/) }
+        end
+
+        context "partekflow class with config_catalina_tmpdir set to /home/flow/partek_flow/temp" do
+          let(:params){
+            {
+              :config_catalina_tmpdir => '/home/flow/partek_flow/temp',
+            }
+          }
+
+          it { is_expected.to_not contain_file('/opt/partek_flow/temp') }
+          it { is_expected.to contain_file('/home/flow/partek_flow/temp').with(
+            'ensure' => 'directory',
+            'owner'  => 'flow',
+            'group'  => 'flowuser',
+            'mode'   => '0755',
+          ) }
+          it { is_expected.to contain_file('/etc/partekflow.conf').with_content(/^CATALINA_TMPDIR=\/home\/flow\/partek_flow\/temp$/) }
+        end
+
+        context "partekflow class with config_installdir set to /opt/flow" do
+          let(:params){
+            {
+              :config_installdir => '/opt/flow',
+            }
+          }
+
+          it { is_expected.to contain_file('/etc/partekflow.conf').with_content(/^FLOWbase=\/opt\/flow$/) }
         end
 
         context "partekflow class with user_home set to relative path ../flow" do
@@ -254,6 +307,7 @@ describe 'partekflow' do
               :user_home => '/home/foo',
             }
           }
+
           it { is_expected.to contain_user('foo').with(
             'ensure'     => 'present',
             'uid'        => '499',
@@ -265,6 +319,8 @@ describe 'partekflow' do
             'shell'      => '/bin/sh',
           ) }
           it { is_expected.to contain_package('partekflow').with_require('[User[foo]{:name=>"foo"}, Yumrepo[partekrepo-stable]{:name=>"partekrepo-stable"}, Yumrepo[partekrepo-noarch-stable]{:name=>"partekrepo-noarch-stable"}]') }
+          it { is_expected.to contain_file('/opt/partek_flow/temp').with_owner('foo') }
+          it { is_expected.to contain_file('/etc/partekflow.conf').with_content(/^FLOWuser=foo$/) }
         end
 
         context "partekflow class with user_shell set to /bin/bash" do

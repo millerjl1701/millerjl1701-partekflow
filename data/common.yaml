@@ -1,5 +1,9 @@
 ---
 
+partekflow::config_catalina_tmpdir: '/opt/partek_flow/temp'
+partekflow::config_file: '/etc/partekflow.conf'
+partekflow::config_installdir: '/opt/partek_flow'
+partekflow::config_template: 'partekflow/partekflow.conf.erb'
 partekflow::package_ensure: 'present'
 partekflow::package_name: 'partekflow'
 partekflow::service_enable: true

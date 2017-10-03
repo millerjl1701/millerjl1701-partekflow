@@ -3,6 +3,10 @@
 #
 # Main class that includes all other classes for manangement of the Partek Flow application.
 #
+# @param config_catalina_tmpdir [Stdlib::Absolutepath] Specifies the directory for temporary files. Default value: /home/flow/partek_flow/temp
+# @param config_file [Stdlib::Absolutepath] Specifies the partekflowd configuration file. Default value: /etc/partekflow.conf
+# @param config_installdir [Stdlib::Absolutepath] Specifies the path to the location of the Partek Flow insallation. Default value: /opt/partek_flow
+# @param config_template [String] Specifies an absolute or relative file path to an ERB template for the config file. Default value: partekflow/partekflow.conf.erb
 # @param package_ensure [String] Whether to install the partekflow package, and what version. Values: 'present', 'latest', or a specific version number. Default value: present.
 # @param package_name [String] Specifies the name of the package to install. Default value: partekflow.
 # @param service_enable [Boolean] Whether to enable the partekflowd service at boot. Default value: true.
@@ -18,6 +22,10 @@
 # @param user_shell [Stdlib::Absolutepath] User shell. Default value: /bin/sh
 # @param user_uid [Integer[1, 499]] The uid of the user to create for the partekflowd server. Default value: 499.
 class partekflow (
+  Stdlib::Absolutepath $config_catalina_tmpdir,
+  Stdlib::Absolutepath $config_file,
+  Stdlib::Absolutepath $config_installdir,
+  String $config_template,
   String $package_ensure,
   String $package_name,
   Boolean $service_enable,

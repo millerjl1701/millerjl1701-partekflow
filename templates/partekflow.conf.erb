@@ -1,0 +1,32 @@
+# Puppet managed file. local changes will be overwritten.
+#
+# Configuration data for Partek Flow server
+#
+## These values are used by the partekflowd script in /etc/init.d
+#
+# The userid used to run the server.
+FLOWuser=<%= scope['partekflow::user_name'] %>
+
+# The path to the FLOWuserflow
+FLOWhome=<%= scope['partekflow::user_home'] %>
+
+# The directory where partek_flow resides
+FLOWbase=<%= scope['partekflow::config_installdir'] %>
+
+# The port to access Partek Flow
+HTTP_PORT=8080
+
+# SSL encrypted port
+HTTPS_PORT=10443
+
+# Shutdown port
+SHUTDOWN_PORT=8015
+
+#AJP port
+AJP_PORT=8009
+
+# The name of the log file
+logfil="$FLOWbase"/logs/daemon.log
+
+# Temporary file upload location
+CATALINA_TMPDIR=<%= scope['partekflow::config_catalina_tmpdir'] %>

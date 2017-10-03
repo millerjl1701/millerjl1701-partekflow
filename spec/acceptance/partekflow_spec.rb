@@ -38,6 +38,28 @@ describe 'partekflow class' do
       it { should be_installed }
     end
 
+    describe file('/etc/partekflow.conf') do
+      it { should be_file }
+      it { should be_owned_by 'root' }
+      it { should be_grouped_into 'root' }
+      it { should be_mode 644 }
+      it { should contain 'FLOWuser=flow' }
+      it { should contain 'FLOWhome=/home/flow' }
+      it { should contain 'FLOWbase=/opt/partek_flow' }
+      it { should contain 'HTTP_PORT=8080' }
+      it { should contain 'HTTPS_PORT=10443' }
+      it { should contain 'SHUTDOWN_PORT=8015' }
+      it { should contain 'AJP_PORT=8009' }
+      it { should contain 'logfil="$FLOWbase"/logs/daemon.log' }
+    end
+
+    describe file('/opt/partek_flow/temp') do
+      it { should be_directory }
+      it { should be_owned_by 'flow' }
+      it { should be_grouped_into 'flowuser' }
+      it { should be_mode 755 }
+    end
+
     describe service('partekflowd') do
       it { should be_enabled }
       it { should be_running }
