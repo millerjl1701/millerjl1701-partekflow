@@ -9,3 +9,4 @@
 - Added service_enable parameter to enable or disable the partekflowd service on boot
 - Added user and group for partekflowd service.
 - Added yum repository management to match current partekflow.repo file.
+- Added /etc/partekflow.conf file as puppet managed file.
