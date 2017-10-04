@@ -19,4 +19,9 @@ Puppetfile.lock
 *.iml
 .*.sw?
 .yardoc/
+.yardwarns
 Guardfile
+doc/
+docs/
+tmp/
+.DS_Store
