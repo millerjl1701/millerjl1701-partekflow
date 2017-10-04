@@ -1,6 +1,4 @@
-2017-09-24 Release 0.1.0
-- Initial commit of files from puppet module generate using millerjl1701/puppet-skeleton.
-- Modified files after testing with the puppet-skeleton as there were some errors in the initial push.
+2017-10-04 Release 1.0.0
 - Changed files for use of hiera 5 and removed params.pp file
 - Modified service_name parameter to partekflowd to reflect actual service name installed
 - Added parameter data types and puppet strings documentation
@@ -8,5 +6,15 @@
 - Added service_ensure parameter to manage the ensure parameter on the partekflowd service resource.
 - Added service_enable parameter to enable or disable the partekflowd service on boot
 - Added user and group for partekflowd service.
+- Added RPM GPG public key installtion for partek-public.key
 - Added yum repository management to match current partekflow.repo file.
 - Added /etc/partekflow.conf file as puppet managed file.
+- Added documentation of module using puppet strings methodology
+- Added code coverage for both spec and acceptance tests
+- Cleaned up directory structure to remove unneeded portions put in place by skeleton.
+- Populated CONTRIBUTORS
+- Updated README.markdown
+
+2017-09-24 Release 0.1.0
+- Initial commit of files from puppet module generate using millerjl1701/puppet-skeleton.
+- Modified files after testing with the puppet-skeleton as there were some errors in the initial push.
