@@ -2,61 +2,101 @@ master branch: [![Build Status](https://secure.travis-ci.org/millerjl1701/miller
 
 #### Table of Contents
 
-1. [Overview](#overview)
-2. [Module Description - What the module does and why it is useful](#module-description)
-3. [Setup - The basics of getting started with partekflow](#setup)
+1. [Module Description - What the module does and why it is useful](#module-description)
+2. [Setup - The basics of getting started with partekflow](#setup)
     * [What partekflow affects](#what-partekflow-affects)
-    * [Setup requirements](#setup-requirements)
     * [Beginning with partekflow](#beginning-with-partekflow)
-4. [Usage - Configuration options and additional functionality](#usage)
-5. [Reference - An under-the-hood peek at what the module is doing and how](#reference)
+3. [Usage - Configuration options and additional functionality](#usage)
+4. [Reference - An under-the-hood peek at what the module is doing and how](#reference)
 5. [Limitations - OS compatibility, etc.](#limitations)
 6. [Development - Guide for contributing to the module](#development)
 
-## Overview
-
-A one-maybe-two sentence summary of what the module does/what problem it solves. This is your 30 second elevator pitch for your module. Consider including OS/Puppet version it works with.       
-
 ## Module Description
 
-If applicable, this section should have a brief description of the technology the module integrates with and what that integration enables. This section should answer the questions: "What does this module *do*?" and "Why would I use it?"
-
-If your module has a range of functionality (installation, configuration, management, etc.) this is the time to mention it.
+The partekflow module installs, configures, and manages Partek Flow software package and service. Partek Flow is "designed specifically for the analysis needs of next generation sequencing applications including RNA, small RNA, and DNA sequencing" that includes a web interface for creation and utilization of custom pipelines. [http://www.partek.com/partekflow](http://www.partek.com/partekflow)
 
 ## Setup
 
 ### What partekflow affects
 
-* A list of files, packages, services, or operations that the module will alter, impact, or execute on the system it's installed on.
-* This is a great place to stick any warnings.
-* Can be in list or paragraph form. 
-
-### Setup Requirements **OPTIONAL**
-
-If your module requires anything extra before setting up (pluginsync enabled, etc.), mention it here. 
+* User and Group: flow
+* Group: flowuser
+* RPM GPG Key: /etc/pki/rpm-gpg/partek-public.key
+* Yumrepos for accessing partek flow RPM repositories. The stable repositories are enabled while the unstable ones are not.
+* Package: partekflow
+* File: /etc/partekflow.conf
+* Catalina temp directory location
+* Service: partekflowd
 
 ### Beginning with partekflow
 
-The very basic steps needed for a user to get the module up and running. 
+`include partekflow` should be all that is needed to install, configure and start the partekflowd service. One can also pass parameters in to change the configuration:
 
-If your most recent release breaks compatibility or requires particular steps for upgrading, you may wish to include an additional section here: Upgrading (For an example, see http://forge.puppetlabs.com/puppetlabs/firewall).
+```puppet
+class { 'partekflow':
+    config_catalina_tmpdir => '/home/flow/partek_flow/temp',
+}
+```
 
 ## Usage
 
-Put the classes, types, and resources for customizing, configuring, and doing the fancy stuff with your module here. 
+All parameters are passed to the main class via either puppet code or hiera. The other classes should not be called directly. Some usage examples are presented below.
+
+### Install and startup partekflowd service
+
+```puppet
+include partekflow
+```
+
+### Change the location of the CATALINA_TMPDIR setting in /etc/partekflow.conf
+
+```puppet
+class { 'partekflow':
+    config_catalina_tmpdir => '/home/flow/partek_flow/temp',
+}
+```
+
+or via hiera:
+
+```yaml
+---
+partekflow::config_catalina_tmpdir: '/home/flow/partek_flow/temp'
+```
+
+### To use a different template for the partekflow.conf file
+
+```puppet
+class { 'partekflow':
+    config_template => 'module_name/path/to/template.erb',
+}
+```
 
 ## Reference
 
-Here, list the classes, types, providers, facts, etc contained in your module. This section should include all of the under-the-hood workings of your module so people know what the module is touching on their system but don't need to mess with things. (We are working on automating this section!)
+This module is using Puppet Strings to generate documentation. In order to generate the documentation set, run:
+
+```bash
+bundle exec rake strings:generate manifests/*.pp
+```
+
+from within the module directory. The resulting documentation should be placed in a docs/ directory within the module. See the [Puppet Strings doumentation](https://github.com/puppetlabs/puppet-strings/) for more details on what Puppet Strings provides and other ways of generating documentaiton output.
+
+Note: this assumes that you have cloned the project repository and are setup for development. If you aren't in the position for doing so, viewing the main class on GitHub for the particular version will also provide similar information.
 
 ## Limitations
 
-This is where you list OS compatibility, version compatibility, etc.
+This module utlizes hiera 5 module data and as such works best on Puppet 4.9+ or Puppet 5.x. Originally written for CentOS 6/7 systems, it could work on other osfamily RedHat distributions. While Partek Flow supports installation on Debian based distributions, this module does not at this time.
+
+The partekflow module depends on puppet 4 data types provided by [puppetlabs-stdlib](https://forge.puppet.com/puppetlabs/stdlib) as well as the [treydock-gpg_key](https://forge.puppet.com/treydock/gpg_key) module.
+
+This module was written to reflect initial installation and configuration [documentation provided by Partek](https://documentation.partek.com/display/FLOWDOC/). This is not an all inclusive module as there are configuration tasks that need to be done via the web UI to configure portions as well. If you find some configuration option would be helpful for maintaining the software on your own servers, please submit an issue or pull request. The latest released version of Partek flow when this was written was: 6.0.17.0919.278-1 and serves as a start point for reference. It is possible that this module will work with prior versions; however, that condition is not tested.
+
+While the module maintainer supports the puppet code contained in the module, support for the application or performance of the Partek Flow software should be directed toward Partek. The module maintainer does not have a relationship with Partek.
 
 ## Development
 
-Since your module is awesome, other users will want to play with it. Let them know what the ground rules for contributing are.
+Please see the [CONTRIBUTING document](CONTRIBUTING.md) for information on how to get started developing code and submit a pull request for this module. While written in an opinionated fashion at the start, over time this can become less and less the case.
 
-## Release Notes/Contributors/Etc **Optional**
+### Contributors
 
-If you aren't using changelog, put your release notes here (though you should consider using changelog). You may also add any additional sections you feel are necessary or important to include here. Please use the `## ` header. 
+To see who is involved with this module, see the [list of contributors.](https://github.com/millerjl1701/millerjl1701-partekflow/graphs/contributors)
