@@ -1,1 +1,5 @@
 ---
+
+partekflow::user_gid: 993
+partekflow::user_groupname_gid: 990
+partekflow::user_uid: 993

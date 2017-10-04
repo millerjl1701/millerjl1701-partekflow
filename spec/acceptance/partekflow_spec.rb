@@ -13,15 +13,39 @@ describe 'partekflow class' do
       apply_manifest(pp, :catch_changes  => true)
     end
 
+    describe group('flow') do
+      it { should exist }
+      if (fact('osfamily') == 'RedHat' and fact('operatingsystemmajrelease') == '6')
+        it { should have_gid 495 }
+      elsif (fact('osfamily') == 'RedHat' and fact('operatingsystemmajrelease') == '7')
+        it { should have_gid 993 }
+      else
+        # shouldn't hit this
+      end
+    end
+
     describe group('flowuser') do
       it { should exist }
-      it { should have_gid 499 }
+      if (fact('osfamily') == 'RedHat' and fact('operatingsystemmajrelease') == '6')
+        it { should have_gid 494 }
+      elsif (fact('osfamily') == 'RedHat' and fact('operatingsystemmajrelease') == '7')
+        it { should have_gid 990 }
+      else
+        # shouldn't hit this
+      end
     end
 
     describe user('flow') do
       it { should exist }
-      it { should have_uid 499 }
+      if (fact('osfamily') == 'RedHat' and fact('operatingsystemmajrelease') == '6')
+        it { should have_uid 495 }
+      elsif (fact('osfamily') == 'RedHat' and fact('operatingsystemmajrelease') == '7')
+        it { should have_uid 993 }
+      else
+        # shouldn't hit this
+      end
       it { should belong_to_primary_group 'flowuser' }
+      it { should belong_to_group 'flow' }
       it { should have_home_directory '/home/flow' }
       it { should have_login_shell '/bin/sh' }
     end

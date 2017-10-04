@@ -17,22 +17,45 @@ describe 'partekflow' do
           it { is_expected.to contain_class('partekflow::install').that_comes_before('Class[partekflow::config]') }
           it { is_expected.to contain_class('partekflow::service').that_subscribes_to('Class[partekflow::config]') }
 
-          it { is_expected.to contain_group('flowuser').with(
-            'ensure'   => 'present',
-            'gid' => '499',
-          ) }
+          it { is_expected.to contain_group('flow').with_ensure('present') }
+
+          if facts[:os]['family'] == "RedHat" && facts[:os]['release']['major'] == '6'
+            it { is_expected.to contain_group('flow').with_gid('495') }
+          end
+
+          if facts[:os]['family'] == "RedHat" && facts[:os]['release']['major'] == '7'
+            it { is_expected.to contain_group('flow').with_gid('993') }
+          end
+
+          it { is_expected.to contain_group('flowuser').with_ensure('present') }
+
+          if facts[:os]['family'] == "RedHat" && facts[:os]['release']['major'] == '6'
+            it { is_expected.to contain_group('flowuser').with_gid('494') }
+          end
+
+          if facts[:os]['family'] == "RedHat" && facts[:os]['release']['major'] == '7'
+            it { is_expected.to contain_group('flowuser').with_gid('990') }
+          end
+
 
           it { is_expected.to contain_user('flow').with(
             'ensure'     => 'present',
-            'uid'        => '499',
-            'gid'        => '499',
+            'gid'        => 'flowuser',
+            'groups'     => 'flow',
             'system'     => true,
             'comment'    => 'Partek Flow daemon',
             'managehome' => true,
             'home'       => '/home/flow',
             'shell'      => '/bin/sh',
-            'require'    => 'Group[flowuser]',
           ) }
+
+          if facts[:os]['family'] == "RedHat" && facts[:os]['release']['major'] == '6'
+            it { is_expected.to contain_user('flow').with_uid('495') }
+          end
+
+          if facts[:os]['family'] == "RedHat" && facts[:os]['release']['major'] == '7'
+            it { is_expected.to contain_user('flow').with_uid('993') }
+          end
 
           it { is_expected.to contain_file('partek-public.key').with(
             'ensure' => 'present',
@@ -227,8 +250,7 @@ describe 'partekflow' do
             }
           }
 
-          it { is_expected.to contain_group('flowuser').with_gid('400') }
-          it { is_expected.to contain_user('flow').with_gid('400') }
+          it { is_expected.to contain_group('flow').with_gid('400') }
         end
 
         context "partekflow class with user_gid set to 1000" do
@@ -238,7 +260,7 @@ describe 'partekflow' do
             }
           }
 
-          it { expect { is_expected.to contain_group('flowuser') }.to raise_error(Puppet::Error, /'user_gid' expects an Integer\[1, 499\] value, got Integer\[1000, 1000\]/) }
+          it { expect { is_expected.to contain_group('flowuser') }.to raise_error(Puppet::Error, /'user_gid' expects an Integer\[1, 999\] value, got Integer\[1000, 1000\]/) }
         end
 
         context "partekflow class with user_groupname set to foos" do
@@ -247,10 +269,29 @@ describe 'partekflow' do
               :user_groupname => 'foos',
             }
           }
-            
+
           it { is_expected.to contain_group('foos') }
-          it { is_expected.to contain_user('flow').with_require('Group[foos]') }
           it { is_expected.to contain_file('/opt/partek_flow/temp').with_group('foos') }
+        end
+
+        context "partekflow class with user_groupname_gid set to 400" do
+          let(:params){
+            {
+              :user_groupname_gid => 400,
+            }
+          }
+
+          it { is_expected.to contain_group('flowuser').with_gid('400') }
+        end
+
+        context "partekflow class with user_gid set to 1000" do
+          let(:params){
+            {
+              :user_gid => 1000,
+            }
+          }
+
+          it { expect { is_expected.to contain_group('flowuser') }.to raise_error(Puppet::Error, /'user_gid' expects an Integer\[1, 999\] value, got Integer\[1000, 1000\]/) }
         end
 
         context "partekflow class with user_home set to /opt/flow" do
@@ -308,16 +349,35 @@ describe 'partekflow' do
             }
           }
 
+          it { is_expected.to contain_group('foo').with_ensure('present') }
+
+          if facts[:os]['family'] == "RedHat" && facts[:os]['release']['major'] == '6'
+            it { is_expected.to contain_group('foo').with_gid('495') }
+          end
+
+          if facts[:os]['family'] == "RedHat" && facts[:os]['release']['major'] == '7'
+            it { is_expected.to contain_group('foo').with_gid('993') }
+          end
+
+
           it { is_expected.to contain_user('foo').with(
             'ensure'     => 'present',
-            'uid'        => '499',
-            'gid'        => '499',
+            'gid'        => 'flowuser',
             'system'     => true,
             'comment'    => 'Partek Flow daemon',
             'managehome' => true,
             'home'       => '/home/foo',
             'shell'      => '/bin/sh',
           ) }
+
+          if facts[:os]['family'] == "RedHat" && facts[:os]['release']['major'] == '6'
+            it { is_expected.to contain_user('foo').with_uid('495') }
+          end
+
+          if facts[:os]['family'] == "RedHat" && facts[:os]['release']['major'] == '7'
+            it { is_expected.to contain_user('foo').with_uid('993') }
+          end
+
           it { is_expected.to contain_package('partekflow').with_require('[User[foo]{:name=>"foo"}, Yumrepo[partekrepo-stable]{:name=>"partekrepo-stable"}, Yumrepo[partekrepo-noarch-stable]{:name=>"partekrepo-noarch-stable"}]') }
           it { is_expected.to contain_file('/opt/partek_flow/temp').with_owner('foo') }
           it { is_expected.to contain_file('/etc/partekflow.conf').with_content(/^FLOWuser=foo$/) }
@@ -360,7 +420,7 @@ describe 'partekflow' do
             }
           }
 
-          it { expect { is_expected.to contain_user('flow') }.to raise_error(Puppet::Error, /'user_uid' expects an Integer\[1, 499\] value, got Integer\[1000, 1000\]/) }
+          it { expect { is_expected.to contain_user('flow') }.to raise_error(Puppet::Error, /'user_uid' expects an Integer\[1, 999\] value, got Integer\[1000, 1000\]/) }
         end
       end
     end

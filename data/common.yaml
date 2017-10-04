@@ -11,10 +11,11 @@ partekflow::service_ensure: 'running'
 partekflow::service_name: 'partekflowd'
 partekflow::user_comment: 'Partek Flow daemon'
 partekflow::user_ensure: 'present'
-partekflow::user_gid: 499
+partekflow::user_gid: 495
 partekflow::user_groupname: 'flowuser'
+partekflow::user_groupname_gid: 494
 partekflow::user_home: '/home/flow'
 partekflow::user_managehome: true
 partekflow::user_name: 'flow'
 partekflow::user_shell: '/bin/sh'
-partekflow::user_uid: 499
+partekflow::user_uid: 495

@@ -14,13 +14,14 @@
 # @param service_name [String] Specifies the name of the service to manage. Default value: partekflowd.
 # @param user_comment [String] Specifies User ID info for the user account. Default: Partek Flow daemon.
 # @param user_ensure [Enum['present', 'absent']] Whether the parteflowd user and group should be present. Default value: true
-# @param user_gid [Integer[1, 499]] The gid of the group to create for the partekflowd server. Default value: 499.
-# @param user_groupname [String] The name of the group to create for the partekdflow server. Default value: flowuser
+# @param user_gid [Integer[1, 999]] The gid of the group to create for the service account with name of user_name (flow); however this is not the primary group of the user. Default value: 495.
+# @param user_groupname [String] The name of the primary group to create for the partekdflow server. Default value: flowuser
+# @param user_groupname_gid [Integer[1, 999]] The gid of the primary group (flowuser) to create for the partekflowd server. Default value: 494.
 # @param user_home [Stdlib::Absolutepath] Location of user home directory. Default value: /home/flow
 # @param user_managehome [Boolean] Whether or not to manage the user home directory. Default value: true.
 # @param user_name [String] The user used to run the partekflowd server. Default value: flow.
 # @param user_shell [Stdlib::Absolutepath] User shell. Default value: /bin/sh
-# @param user_uid [Integer[1, 499]] The uid of the user to create for the partekflowd server. Default value: 499.
+# @param user_uid [Integer[1, 999]] The uid of the user to create for the partekflowd server. Default value: 495.
 class partekflow (
   Stdlib::Absolutepath $config_catalina_tmpdir,
   Stdlib::Absolutepath $config_file,
@@ -33,13 +34,14 @@ class partekflow (
   String $service_name,
   String $user_comment,
   Enum['present', 'absent'] $user_ensure,
-  Integer[1, 499] $user_gid,
+  Integer[1, 999] $user_gid,
   String $user_groupname,
+  Integer[1, 999] $user_groupname_gid,
   Stdlib::Absolutepath $user_home,
   Boolean $user_managehome,
   String $user_name,
   Stdlib::Absolutepath $user_shell,
-  Integer[1, 499] $user_uid,
+  Integer[1, 999] $user_uid,
 ) {
 
   # validate parameters here
