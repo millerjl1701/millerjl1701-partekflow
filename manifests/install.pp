@@ -34,40 +34,73 @@ class partekflow::install {
   gpg_key { 'partek-public.key':
     path => '/etc/pki/rpm-gpg/partek-public.key',
   }
-  yumrepo { 'partekrepo-stable':
-    ensure   => present,
-    baseurl  => 'http://packages.partek.com/redhat/stable/$basearch',
-    enabled  => 1,
-    gpgcheck => 0,
-    gpgkey   => 'file:///etc/pki/rpm-gpg/partek-public.key',
-    require  => Gpg_key['partek-public.key'],
+  if $::partekflow::yumrepo_manage {
+    if $::partekflow::yumrepo_enabled_stable {
+      $enabled_stable = '1'
+    }
+    else {
+      $enabled_stable = '0'
+    }
+    if $::partekflow::yumrepo_enabled_unstable {
+      $enabled_unstable = '1'
+    }
+    else {
+      $enabled_unstable = '0'
+    }
+    if $::partekflow::yumrepo_ensure_stable {
+      $ensure_stable = 'present'
+    }
+    else {
+      $ensure_stable = 'absent'
+    }
+    if $::partekflow::yumrepo_ensure_unstable {
+      $ensure_unstable = 'present'
+    }
+    else {
+      $ensure_unstable = 'absent'
+    }
+    yumrepo { 'partekrepo-stable':
+      ensure   => $ensure_stable,
+      baseurl  => "${::partekflow::yumrepo_baseurl_server}${::partekflow::yumrepo_baseurl_stablepath}/\$basearch",
+      enabled  => $enabled_stable,
+      gpgcheck => 0,
+      gpgkey   => 'file:///etc/pki/rpm-gpg/partek-public.key',
+      require  => Gpg_key['partek-public.key'],
+    }
+    yumrepo { 'partekrepo-noarch-stable':
+      ensure   => $ensure_stable,
+      baseurl  => "${::partekflow::yumrepo_baseurl_server}${::partekflow::yumrepo_baseurl_stablepath}/noarch",
+      enabled  => $enabled_stable,
+      gpgcheck => 0,
+      gpgkey   => 'file:///etc/pki/rpm-gpg/partek-public.key',
+      require  => Gpg_key['partek-public.key'],
+    }
+    yumrepo { 'partekrepo-unstable':
+      ensure   => $ensure_unstable,
+      baseurl  => "${::partekflow::yumrepo_baseurl_server}${::partekflow::yumrepo_baseurl_unstablepath}/\$basearch",
+      enabled  => $enabled_unstable,
+      gpgcheck => 0,
+      gpgkey   => 'file:///etc/pki/rpm-gpg/partek-public.key',
+      require  => Gpg_key['partek-public.key'],
+    }
+    yumrepo { 'partekrepo-noarch-unstable':
+      ensure   => $ensure_unstable,
+      baseurl  => "${::partekflow::yumrepo_baseurl_server}${::partekflow::yumrepo_baseurl_unstablepath}/noarch",
+      enabled  => $enabled_unstable,
+      gpgcheck => 0,
+      gpgkey   => 'file:///etc/pki/rpm-gpg/partek-public.key',
+      require  => Gpg_key['partek-public.key'],
+    }
+    package { $::partekflow::package_name:
+      ensure  => $::partekflow::package_ensure,
+      require => [ User[$::partekflow::user_name], Yumrepo['partekrepo-stable'], Yumrepo['partekrepo-noarch-stable'], ],
+    }
   }
-  yumrepo { 'partekrepo-noarch-stable':
-    ensure   => present,
-    baseurl  => 'http://packages.partek.com/redhat/stable/noarch',
-    enabled  => 1,
-    gpgcheck => 0,
-    gpgkey   => 'file:///etc/pki/rpm-gpg/partek-public.key',
-    require  => Gpg_key['partek-public.key'],
-  }
-  yumrepo { 'partekrepo-unstable':
-    ensure   => present,
-    baseurl  => 'http://packages.partek.com/redhat/unstable/$basearch',
-    enabled  => 0,
-    gpgcheck => 0,
-    gpgkey   => 'file:///etc/pki/rpm-gpg/partek-public.key',
-    require  => Gpg_key['partek-public.key'],
-  }
-  yumrepo { 'partekrepo-noarch-unstable':
-    ensure   => present,
-    baseurl  => 'http://packages.partek.com/redhat/unstable/noarch',
-    enabled  => 0,
-    gpgcheck => 0,
-    gpgkey   => 'file:///etc/pki/rpm-gpg/partek-public.key',
-    require  => Gpg_key['partek-public.key'],
-  }
-  package { $::partekflow::package_name:
-    ensure  => $::partekflow::package_ensure,
-    require => [ User[$::partekflow::user_name], Yumrepo['partekrepo-stable'], Yumrepo['partekrepo-noarch-stable'], ],
+  else {
+    package { $::partekflow::package_name:
+      ensure  => $::partekflow::package_ensure,
+      require => User[$::partekflow::user_name],
+    }
+
   }
 }
