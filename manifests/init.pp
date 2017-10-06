@@ -22,6 +22,14 @@
 # @param user_name [String] The user used to run the partekflowd server. Default value: flow.
 # @param user_shell [Stdlib::Absolutepath] User shell. Default value: /bin/sh
 # @param user_uid [Integer[1, 999]] The uid of the user to create for the partekflowd server. Default value: 495.
+# @param yumrepo_baseurl_server [Optional Stdlib::Httpurl] URI of repository server. Default value (on osfamily=RedHat): http://packages.partek.com
+# @param yumrepo_baseurl_stablepath [Optional String] path to the location of the stable repositories not including the architecture portion (i.e. basearch or noarch). Default value (on osfamily=RedHat): /redhat/stable
+# @param yumrepo_baseurl_unstablepath [Optional String] path to the location of the unstable package repositories not including the architecture portion (i.e. basearch or noarch). Default value (on osfamily=RedHat): /redhat/unstable
+# @param yumrepo_enabled_stable [Optional Boolean] Whether or not to enable the stable yumrepo resources. Default value (on osfamily=RedHat): true
+# @param yumrepo_enabled_unstable [Optional Boolean] Whether or not to enable the unstable yumrepo resources. Default value (on osfamily=RedHat): false
+# @param yumrepo_ensure_stable [Optional Boolean] Specifies if the stable yumrepos.d config files should be present (true) or absent (false). Default value (on osfamily=RedHat): true
+# @param yumrepo_ensure_unstable [Optional Boolean] Specifies if the unstable yumrepos.d config files should be present (true) or absent (false). Default value (on osfamily=RedHat): true
+# @param yumrepo_manage [Optional Boolean] Whether or not to manage the package repositories. Default value (on osfamily=RedHat): true.
 class partekflow (
   Stdlib::Absolutepath $config_catalina_tmpdir,
   Stdlib::Absolutepath $config_file,
@@ -42,6 +50,14 @@ class partekflow (
   String $user_name,
   Stdlib::Absolutepath $user_shell,
   Integer[1, 999] $user_uid,
+  Optional[Stdlib::Httpurl] $yumrepo_baseurl_server,
+  Optional[String] $yumrepo_baseurl_stablepath,
+  Optional[String] $yumrepo_baseurl_unstablepath,
+  Optional[Boolean] $yumrepo_enabled_stable,
+  Optional[Boolean] $yumrepo_enabled_unstable,
+  Optional[Boolean] $yumrepo_ensure_stable,
+  Optional[Boolean] $yumrepo_ensure_unstable,
+  Optional[Boolean] $yumrepo_manage,
 ) {
 
   # validate parameters here

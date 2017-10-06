@@ -422,6 +422,103 @@ describe 'partekflow' do
 
           it { expect { is_expected.to contain_user('flow') }.to raise_error(Puppet::Error, /'user_uid' expects an Integer\[1, 999\] value, got Integer\[1000, 1000\]/) }
         end
+
+        context "partekflow class with yumrepo_baseurl_server set to http://yum.example.com" do
+          let(:params){
+            {
+              :yumrepo_baseurl_server => 'http://yum.example.com',
+            }
+          }
+
+          it { is_expected.to contain_yumrepo('partekrepo-stable').with_baseurl('http://yum.example.com/redhat/stable/$basearch') }
+          it { is_expected.to contain_yumrepo('partekrepo-noarch-stable').with_baseurl('http://yum.example.com/redhat/stable/noarch') }
+          it { is_expected.to contain_yumrepo('partekrepo-unstable').with_baseurl('http://yum.example.com/redhat/unstable/$basearch') }
+          it { is_expected.to contain_yumrepo('partekrepo-noarch-unstable').with_baseurl('http://yum.example.com/redhat/unstable/noarch') }
+        end
+
+        context "partekflow class with yumrepo_baseurl_stablepath set to /foo/stabler" do
+          let(:params){
+            {
+              :yumrepo_baseurl_stablepath => '/foo/stabler',
+            }
+          }
+
+          it { is_expected.to contain_yumrepo('partekrepo-stable').with_baseurl('http://packages.partek.com/foo/stabler/$basearch') }
+          it { is_expected.to contain_yumrepo('partekrepo-noarch-stable').with_baseurl('http://packages.partek.com/foo/stabler/noarch') }
+        end
+
+        context "partekflow class with yumrepo_baseurl_unstablepath set to /foo/unstabler" do
+          let(:params){
+            {
+              :yumrepo_baseurl_unstablepath => '/foo/unstabler',
+            }
+          }
+
+          it { is_expected.to contain_yumrepo('partekrepo-unstable').with_baseurl('http://packages.partek.com/foo/unstabler/$basearch') }
+          it { is_expected.to contain_yumrepo('partekrepo-noarch-unstable').with_baseurl('http://packages.partek.com/foo/unstabler/noarch') }
+        end
+
+        context "partekflow class with yumrepo_enabled_stable set to false" do
+          let(:params){
+            {
+              :yumrepo_enabled_stable => false,
+            }
+          }
+
+          it { is_expected.to contain_yumrepo('partekrepo-stable').with_enabled('0') }
+          it { is_expected.to contain_yumrepo('partekrepo-noarch-stable').with_enabled('0') }
+        end
+
+        context "partekflow class with yumrepo_enabled_unstable set to true" do
+          let(:params){
+            {
+              :yumrepo_enabled_unstable => true,
+            }
+          }
+
+          it { is_expected.to contain_yumrepo('partekrepo-unstable').with_enabled('1') }
+          it { is_expected.to contain_yumrepo('partekrepo-noarch-unstable').with_enabled('1') }
+        end
+
+        context "partekflow class with yumrepo_ensure_stable set to false" do
+          let(:params){
+            {
+              :yumrepo_ensure_stable => false,
+            }
+          }
+
+          it { is_expected.to contain_yumrepo('partekrepo-stable').with_ensure('absent') }
+          it { is_expected.to contain_yumrepo('partekrepo-noarch-stable').with_ensure('absent') }
+        end
+
+        context "partekflow class with yumrepo_ensure_unstable set to true" do
+          let(:params){
+            {
+              :yumrepo_ensure_unstable => true,
+            }
+          }
+
+          it { is_expected.to contain_yumrepo('partekrepo-unstable').with_ensure('present') }
+          it { is_expected.to contain_yumrepo('partekrepo-noarch-unstable').with_ensure('present') }
+        end
+
+        context "partekflow class with yumrepo_manage set to false" do
+          let(:params){
+            {
+              :yumrepo_manage => false,
+            }
+          }
+
+          it { is_expected.to_not contain_yumrepo('partekrepo-stable') }
+          it { is_expected.to_not contain_yumrepo('partekrepo-noarch-stable') }
+          it { is_expected.to_not contain_yumrepo('partekrepo-unstable') }
+          it { is_expected.to_not contain_yumrepo('partekrepo-noarch-unstable') }
+          it { is_expected.to contain_package('partekflow').with(
+            'ensure'  => 'present',
+            'require' => 'User[flow]',
+          ) }
+        end
+
       end
     end
   end

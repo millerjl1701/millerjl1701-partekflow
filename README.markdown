@@ -52,7 +52,7 @@ include partekflow
 
 ```puppet
 class { 'partekflow':
-    config_catalina_tmpdir => '/home/flow/partek_flow/temp',
+  config_catalina_tmpdir => '/home/flow/partek_flow/temp',
 }
 ```
 
@@ -67,9 +67,37 @@ partekflow::config_catalina_tmpdir: '/home/flow/partek_flow/temp'
 
 ```puppet
 class { 'partekflow':
-    config_template => 'module_name/path/to/template.erb',
+  config_template => 'module_name/path/to/template.erb',
 }
 ```
+
+### To disable the stable repsitory files but still have them present in /etc/yum.repos.d/
+
+```puppet
+class { 'partekflow':
+  yumrepo_ensure_stable  => true,
+  yumrepo_enabled_stable => false,
+}
+```
+
+### To use a local repository mirror instead of the Partek repositories
+
+```puppet
+class { 'partekflow':
+  yumrepo_baseurl_server       => 'http://yum.example.com',
+  yumrepo_baseurl_stablepath   => '/path/to/stable',
+  yumrepo_baseurl_unstablepath => '/path/to/unstable',
+}
+```
+
+### To remove the unstable /etc/yum.repos.d/ files
+
+```puppet
+class { 'partekflow':
+  ensure_unstable => false,
+}
+```
+
 
 ## Reference
 

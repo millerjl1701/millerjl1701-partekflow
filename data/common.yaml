@@ -19,3 +19,11 @@ partekflow::user_managehome: true
 partekflow::user_name: 'flow'
 partekflow::user_shell: '/bin/sh'
 partekflow::user_uid: 495
+partekflow::yumrepo_baseurl_server: ~
+partekflow::yumrepo_baseurl_stablepath: ~
+partekflow::yumrepo_baseurl_unstablepath: ~
+partekflow::yumrepo_enabled_stable: ~
+partekflow::yumrepo_enabled_unstable: ~
+partekflow::yumrepo_ensure_stable: ~
+partekflow::yumrepo_ensure_unstable: ~
+partekflow::yumrepo_manage: ~
