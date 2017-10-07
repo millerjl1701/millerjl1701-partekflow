@@ -31,7 +31,7 @@
 # @param yumrepo_ensure_unstable [Optional Boolean] Specifies if the unstable yumrepos.d config files should be present (true) or absent (false). Default value (on osfamily=RedHat): true
 # @param yumrepo_manage [Optional Boolean] Whether or not to manage the package repositories. Default value (on osfamily=RedHat): true.
 class partekflow (
-  Stdlib::Absolutepath        $config_catalina_tmpdir       = '/home/flow/partek_flow/temp',
+  Stdlib::Absolutepath        $config_catalina_tmpdir       = '/opt/partek_flow/temp',
   Stdlib::Absolutepath        $config_file                  = '/etc/partekflow.conf',
   Stdlib::Absolutepath        $config_installdir            = '/opt/partek_flow',
   String                      $config_template              = 'partekflow/partekflow.conf.erb',
@@ -56,7 +56,7 @@ class partekflow (
   Optional[Boolean]           $yumrepo_enabled_stable       = true,
   Optional[Boolean]           $yumrepo_enabled_unstable     = false,
   Optional[Boolean]           $yumrepo_ensure_stable        = true,
-  Optional[Boolean]           $yumrepo_ensure_unstable      = false,
+  Optional[Boolean]           $yumrepo_ensure_unstable      = true,
   Optional[Boolean]           $yumrepo_manage               = true,
 ) {
 
