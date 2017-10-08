@@ -198,7 +198,7 @@ describe 'partekflow' do
             }
           }
 
-          it { expect { is_expected.to contain_service('partekflowd') }.to raise_error(Puppet::Error, /parameter 'service_ensure' expects a match for Enum/) }
+          it { expect { is_expected.to contain_service('partekflowd') }.to raise_error(Puppet::Error) }
         end
 
         context "partekflow class with service_name set to foo" do
@@ -239,8 +239,8 @@ describe 'partekflow' do
             }
           }
 
-          it { expect { is_expected.to contain_group('flowuser') }.to raise_error(Puppet::Error, /parameter 'user_ensure' expects a match for Enum/) }
-          it { expect { is_expected.to contain_user('flow') }.to raise_error(Puppet::Error, /parameter 'user_ensure' expects a match for Enum/) }
+          it { expect { is_expected.to contain_group('flowuser') }.to raise_error(Puppet::Error) }
+          it { expect { is_expected.to contain_user('flow') }.to raise_error(Puppet::Error) }
         end
 
         context "partekflow class with user_gid set to 400" do
@@ -260,7 +260,7 @@ describe 'partekflow' do
             }
           }
 
-          it { expect { is_expected.to contain_group('flowuser') }.to raise_error(Puppet::Error, /'user_gid' expects an Integer\[1, 999\] value, got Integer\[1000, 1000\]/) }
+          it { expect { is_expected.to contain_group('flowuser') }.to raise_error(Puppet::Error) }
         end
 
         context "partekflow class with user_groupname set to foos" do
@@ -291,7 +291,7 @@ describe 'partekflow' do
             }
           }
 
-          it { expect { is_expected.to contain_group('flowuser') }.to raise_error(Puppet::Error, /'user_gid' expects an Integer\[1, 999\] value, got Integer\[1000, 1000\]/) }
+          it { expect { is_expected.to contain_group('flowuser') }.to raise_error(Puppet::Error) }
         end
 
         context "partekflow class with user_home set to /opt/flow" do
@@ -338,7 +338,7 @@ describe 'partekflow' do
               :user_home => '../flow',
             }
           }
-          it { expect { is_expected.to contain_user('flow') }.to raise_error(Puppet::Error, /Error while evaluating a Resource Statement, Class/) }
+          it { expect { is_expected.to contain_user('flow') }.to raise_error(Puppet::Error) }
         end
 
         context "partekflow class with user_name set to foo" do
@@ -400,7 +400,7 @@ describe 'partekflow' do
             }
           }
 
-          it { expect { is_expected.to contain_user('flow') }.to raise_error(Puppet::Error, /Error while evaluating a Resource Statement, Class/) }
+          it { expect { is_expected.to contain_user('flow') }.to raise_error(Puppet::Error) }
         end
 
         context "partekflow class with user_uid set to 400" do
@@ -420,7 +420,7 @@ describe 'partekflow' do
             }
           }
 
-          it { expect { is_expected.to contain_user('flow') }.to raise_error(Puppet::Error, /'user_uid' expects an Integer\[1, 999\] value, got Integer\[1000, 1000\]/) }
+          it { expect { is_expected.to contain_user('flow') }.to raise_error(Puppet::Error) }
         end
 
         context "partekflow class with yumrepo_baseurl_server set to http://yum.example.com" do
@@ -527,8 +527,9 @@ describe 'partekflow' do
     describe 'partekflow class without any parameters on Solaris/Nexenta' do
       let(:facts) do
         {
-          :osfamily        => 'Solaris',
-          :operatingsystem => 'Nexenta',
+          :osfamily                  => 'Solaris',
+          :operatingsystem           => 'Nexenta',
+          :operatingsystemmajrelease => '5',
         }
       end
 
