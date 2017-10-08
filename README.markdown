@@ -1,15 +1,17 @@
+# partekflow
+
 master branch: [![Build Status](https://secure.travis-ci.org/millerjl1701/millerjl1701-partekflow.png?branch=master)](http://travis-ci.org/millerjl1701/millerjl1701-partekflow)
 
 #### Table of Contents
 
 1. [Module Description - What the module does and why it is useful](#module-description)
-2. [Setup - The basics of getting started with partekflow](#setup)
+1. [Setup - The basics of getting started with partekflow](#setup)
     * [What partekflow affects](#what-partekflow-affects)
     * [Beginning with partekflow](#beginning-with-partekflow)
-3. [Usage - Configuration options and additional functionality](#usage)
-4. [Reference - An under-the-hood peek at what the module is doing and how](#reference)
-5. [Limitations - OS compatibility, etc.](#limitations)
-6. [Development - Guide for contributing to the module](#development)
+1. [Usage - Configuration options and additional functionality](#usage)
+1. [Reference - An under-the-hood peek at what the module is doing and how](#reference)
+1. [Limitations - OS compatibility, etc.](#limitations)
+1. [Development - Guide for contributing to the module](#development)
 
 ## Module Description
 
@@ -94,30 +96,40 @@ class { 'partekflow':
 
 ```puppet
 class { 'partekflow':
-  ensure_unstable => false,
+  yumrepo_ensure_unstable => false,
 }
 ```
 
 
 ## Reference
 
-This module is using Puppet Strings to generate documentation. In order to generate the documentation set, run:
+
+This module is setup for the use of Puppet Strings to generate class and parameter documentation. The [Puppet Strings doumentation](https://github.com/puppetlabs/puppet-strings/) provides more details on what Puppet Strings provides and other ways of generating documentaiton output.
+
+As a quick start, if you are using the gem version of puppet:
+
+```bash
+gem install puppet-strings
+puppet strings generate manifests/*.pp
+```
+
+The puppet strings command should be run from the root of the module directory. The resulting documentation will by default be placed in a docs/ directory within the module.
+
+If you are setup with the development environment as described in the [CONTRIBUTING document](CONTRIBUTING.md) :
 
 ```bash
 bundle exec rake strings:generate manifests/*.pp
 ```
 
-from within the module directory. The resulting documentation should be placed in a docs/ directory within the module. See the [Puppet Strings doumentation](https://github.com/puppetlabs/puppet-strings/) for more details on what Puppet Strings provides and other ways of generating documentaiton output.
-
-Note: this assumes that you have cloned the project repository and are setup for development. If you aren't in the position for doing so, viewing the main class on GitHub for the particular version will also provide similar information.
+from within the module directory will generate the documentation as well.
 
 ## Limitations
 
-This module utlizes hiera 5 module data and as such works best on Puppet 4.9+ or Puppet 5.x. Originally written for CentOS 6/7 systems, it could work on other osfamily RedHat distributions. While Partek Flow supports installation on Debian based distributions, this module does not at this time.
+This module is written to work with Puppet 4.7 or higher. Hiera 5 data is embedded within the module as well for Puppet 4.9 or higher. The module depends on Puppet 4 data types provided by [puppetlabs-stdlib](https://forge.puppet.com/puppetlabs/stdlib) as well as the [treydock-gpg_key](https://forge.puppet.com/treydock/gpg_key) module.
 
-The partekflow module depends on puppet 4 data types provided by [puppetlabs-stdlib](https://forge.puppet.com/puppetlabs/stdlib) as well as the [treydock-gpg_key](https://forge.puppet.com/treydock/gpg_key) module.
+Originally written for CentOS 6/7 systems, it could work on other osfamily RedHat distributions. While Partek Flow supports installation on Debian based distributions, this module does not at this time.
 
-This module was written to reflect initial installation and configuration [documentation provided by Partek](https://documentation.partek.com/display/FLOWDOC/). This is not an all inclusive module as there are configuration tasks that need to be done via the web UI to configure portions as well. If you find some configuration option would be helpful for maintaining the software on your own servers, please submit an issue or pull request. The latest released version of Partek flow when this was written was: 6.0.17.0919.278-1 and serves as a start point for reference. It is possible that this module will work with prior versions; however, that condition is not tested.
+This module was written to reflect initial installation and configuration [documentation provided by Partek](https://documentation.partek.com/display/FLOWDOC/). This is not an all inclusive module as there are configuration tasks that need to be done via the web UI to configure portions of the application. If you find some configuration option would be helpful for maintaining the software on your own servers, please submit an issue or pull request. The latest released version of Partek flow when this was written was: 6.0.17.0919.278-1 and serves as a start point for reference. It is possible that this module will work with prior partekflow versions; however, that condition has not been tested.
 
 While the module maintainer supports the puppet code contained in the module, support for the application or performance of the Partek Flow software should be directed toward Partek. The module maintainer does not have a relationship with Partek.
 
@@ -127,4 +139,4 @@ Please see the [CONTRIBUTING document](CONTRIBUTING.md) for information on how t
 
 ### Contributors
 
-To see who is involved with this module, see the [list of contributors.](https://github.com/millerjl1701/millerjl1701-partekflow/graphs/contributors)
+To see who is involved with this module, see the [GitHub list of contributors](https://github.com/millerjl1701/millerjl1701-partekflow/graphs/contributors) or the [CONTRIBUTORS document](CONTRIBUTORS).
