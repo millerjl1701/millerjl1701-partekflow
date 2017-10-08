@@ -50,14 +50,14 @@ class partekflow (
   String                      $user_name                    = 'flow',
   Stdlib::Absolutepath        $user_shell                   = '/bin/sh',
   Integer[1, 999]             $user_uid                     = 495,
-  Optional[Stdlib::Httpurl]   $yumrepo_baseurl_server       = 'http://packages.partek.com',
-  Optional[String]            $yumrepo_baseurl_stablepath   = '/redhat/stable',
-  Optional[String]            $yumrepo_baseurl_unstablepath = '/redhat/unstable',
-  Optional[Boolean]           $yumrepo_enabled_stable       = true,
-  Optional[Boolean]           $yumrepo_enabled_unstable     = false,
-  Optional[Boolean]           $yumrepo_ensure_stable        = true,
-  Optional[Boolean]           $yumrepo_ensure_unstable      = true,
-  Optional[Boolean]           $yumrepo_manage               = true,
+  Optional[Stdlib::Httpurl]   $yumrepo_baseurl_server       = undef,
+  Optional[String]            $yumrepo_baseurl_stablepath   = undef,
+  Optional[String]            $yumrepo_baseurl_unstablepath = undef,
+  Optional[Boolean]           $yumrepo_enabled_stable       = undef,
+  Optional[Boolean]           $yumrepo_enabled_unstable     = undef,
+  Optional[Boolean]           $yumrepo_ensure_stable        = undef,
+  Optional[Boolean]           $yumrepo_ensure_unstable      = undef,
+  Optional[Boolean]           $yumrepo_manage               = undef,
 ) {
 
   # validate parameters here
