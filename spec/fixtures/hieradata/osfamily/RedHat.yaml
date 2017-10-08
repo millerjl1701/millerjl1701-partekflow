@@ -1,0 +1,10 @@
+---
+
+partekflow::yumrepo_baseurl_server: 'http://packages.partek.com'
+partekflow::yumrepo_baseurl_stablepath: '/redhat/stable'
+partekflow::yumrepo_baseurl_unstablepath: '/redhat/unstable'
+partekflow::yumrepo_enabled_stable: true
+partekflow::yumrepo_enabled_unstable: false
+partekflow::yumrepo_ensure_stable: true
+partekflow::yumrepo_ensure_unstable: true
+partekflow::yumrepo_manage: true

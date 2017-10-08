@@ -5,4 +5,7 @@
   :datadir: './spec/fixtures/hieradata'
 :hierarchy:
   - '%{::clientcert}'
-  - 'default'
+  - 'osname/%{::operatingsystem}-%{::operatingsystemmajrelease}'
+  - 'osname/%{::operatingsystem}'
+  - 'osfamily/%{::osfamily}'
+  - 'common'
