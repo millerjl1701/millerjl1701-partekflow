@@ -1,5 +1,12 @@
 # Change Log
 
+## [v1.3.0](https://github.com/millerjl1701/millerjl1701-partekflow/tree/v1.3.0) (2017-10-11)
+[Full Changelog](https://github.com/millerjl1701/millerjl1701-partekflow/compare/v1.2.0...v1.3.0)
+
+**Merged pull requests:**
+
+- Added initial backupdb task. [\#3](https://github.com/millerjl1701/millerjl1701-partekflow/pull/3) ([millerjl1701](https://github.com/millerjl1701))
+
 ## [v1.2.0](https://github.com/millerjl1701/millerjl1701-partekflow/tree/v1.2.0) (2017-10-08)
 [Full Changelog](https://github.com/millerjl1701/millerjl1701-partekflow/compare/v1.1.0...v1.2.0)
 
