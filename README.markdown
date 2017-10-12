@@ -100,28 +100,55 @@ class { 'partekflow':
 }
 ```
 
-
 ## Reference
 
+Generated puppet strings documentation with examples is available from [https://millerjl1701.github.io/millerjl1701-partekflow/](https://millerjl1701.github.io/millerjl1701-partekflow/).
 
-This module is setup for the use of Puppet Strings to generate class and parameter documentation. The [Puppet Strings doumentation](https://github.com/puppetlabs/puppet-strings/) provides more details on what Puppet Strings provides and other ways of generating documentaiton output.
+It's also included in the docs/ folder as simple html pages.
 
-As a quick start, if you are using the gem version of puppet:
+### Classes
 
-```bash
-gem install puppet-strings
-puppet strings generate manifests/*.pp
-```
+#### Public Classes
 
-The puppet strings command should be run from the root of the module directory. The resulting documentation will by default be placed in a docs/ directory within the module.
+* partekflow: Main class. Contains or calls all other classes or defines.
 
-If you are setup with the development environment as described in the [CONTRIBUTING document](CONTRIBUTING.md) :
+#### Private Classes
 
-```bash
-bundle exec rake strings:generate manifests/*.pp
-```
+* partekflow::config: Handles configuration of the service.
+* partekflow::install: Handles the installation of the software.
+* partekflow::service: Manages the partekflowd service.
 
-from within the module directory will generate the documentation as well.
+### Parameters
+
+The partekflow::init class has the following parameters:
+
+    Stdlib::Absolutepath        $config_catalina_tmpdir       = '/opt/partek_flow/temp',
+    Stdlib::Absolutepath        $config_file                  = '/etc/partekflow.conf',
+    Stdlib::Absolutepath        $config_installdir            = '/opt/partek_flow',
+    String                      $config_template              = 'partekflow/partekflow.conf.erb',
+    String                      $package_ensure               = 'present',
+    String                      $package_name                 = 'partekflow',
+    Boolean                     $service_enable               = true,
+    Enum['running', 'stopped']  $service_ensure               = 'running',
+    String                      $service_name                 = 'partekflowd',
+    String                      $user_comment                 = 'Partek Flow daemon',
+    Enum['present', 'absent']   $user_ensure                  = 'present',
+    Integer[1, 999]             $user_gid                     = 495,
+    String                      $user_groupname               = 'flowuser',
+    Integer[1, 999]             $user_groupname_gid           = 494,
+    Stdlib::Absolutepath        $user_home                    = '/home/flow',
+    Boolean                     $user_managehome              = true,
+    String                      $user_name                    = 'flow',
+    Stdlib::Absolutepath        $user_shell                   = '/bin/sh',
+    Integer[1, 999]             $user_uid                     = 495,
+    Optional[Stdlib::Httpurl]   $yumrepo_baseurl_server       = undef,
+    Optional[String]            $yumrepo_baseurl_stablepath   = undef,
+    Optional[String]            $yumrepo_baseurl_unstablepath = undef,
+    Optional[Boolean]           $yumrepo_enabled_stable       = undef,
+    Optional[Boolean]           $yumrepo_enabled_unstable     = undef,
+    Optional[Boolean]           $yumrepo_ensure_stable        = undef,
+    Optional[Boolean]           $yumrepo_ensure_unstable      = undef,
+    Optional[Boolean]           $yumrepo_manage               = undef
 
 ## Limitations
 

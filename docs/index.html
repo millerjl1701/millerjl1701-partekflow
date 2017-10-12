@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>
+  File: README
+  
+    &mdash; Documentation by YARD 0.9.9
+  
+</title>
+
+  <link rel="stylesheet" href="css/style.css" type="text/css" charset="utf-8" />
+
+  <link rel="stylesheet" href="css/common.css" type="text/css" charset="utf-8" />
+
+<script type="text/javascript" charset="utf-8">
+  pathId = "";
+  relpath = '';
+</script>
+
+
+  <script type="text/javascript" charset="utf-8" src="js/jquery.js"></script>
+
+  <script type="text/javascript" charset="utf-8" src="js/app.js"></script>
+
+
+  </head>
+  <body>
+    <div class="nav_wrap">
+      <iframe id="nav" src="puppet_class_list.html?1"></iframe>
+      <div id="resizer"></div>
+    </div>
+
+    <div id="main" tabindex="-1">
+      <div id="header">
+        <div id="menu">
+  
+    <a href="_index.html">Index</a> &raquo; 
+    <span class="title">File: README</span>
+  
+</div>
+
+        <div id="search">
+  
+    <a class="full_list_link" id="puppet_class_list_link"
+        href="puppet_class_list.html">
+
+        <svg width="24" height="24">
+          <rect x="0" y="4" width="24" height="4" rx="1" ry="1"></rect>
+          <rect x="0" y="12" width="24" height="4" rx="1" ry="1"></rect>
+          <rect x="0" y="20" width="24" height="4" rx="1" ry="1"></rect>
+        </svg>
+    </a>
+  
+</div>
+        <div class="clear"></div>
+      </div>
+
+      <div id="content"><div id='filecontents'><h1>partekflow</h1>
+
+<p>master branch: <a href="http://travis-ci.org/millerjl1701/millerjl1701-partekflow"><img src="https://secure.travis-ci.org/millerjl1701/millerjl1701-partekflow.png?branch=master" alt="Build Status"></a></p>
+
+<h4>Table of Contents</h4>
+
+<ol>
+<li><a href="#module-description">Module Description - What the module does and why it is useful</a></li>
+<li><a href="#setup">Setup - The basics of getting started with partekflow</a>
+
+<ul>
+<li><a href="#what-partekflow-affects">What partekflow affects</a></li>
+<li><a href="#beginning-with-partekflow">Beginning with partekflow</a></li>
+</ul></li>
+<li><a href="#usage">Usage - Configuration options and additional functionality</a></li>
+<li><a href="#reference">Reference - An under-the-hood peek at what the module is doing and how</a></li>
+<li><a href="#limitations">Limitations - OS compatibility, etc.</a></li>
+<li><a href="#development">Development - Guide for contributing to the module</a></li>
+</ol>
+
+<h2>Module Description</h2>
+
+<p>The partekflow module installs, configures, and manages Partek Flow software package and service. Partek Flow is &quot;designed specifically for the analysis needs of next generation sequencing applications including RNA, small RNA, and DNA sequencing&quot; that includes a web interface for creation and utilization of custom pipelines. <a href="http://www.partek.com/partekflow">http://www.partek.com/partekflow</a></p>
+
+<h2>Setup</h2>
+
+<h3>What partekflow affects</h3>
+
+<ul>
+<li>User and Group: flow</li>
+<li>Group: flowuser</li>
+<li>RPM GPG Key: /etc/pki/rpm-gpg/partek-public.key</li>
+<li>Yumrepos for accessing partek flow RPM repositories. The stable repositories are enabled while the unstable ones are not.</li>
+<li>Package: partekflow</li>
+<li>File: /etc/partekflow.conf</li>
+<li>Catalina temp directory location</li>
+<li>Service: partekflowd</li>
+</ul>
+
+<h3>Beginning with partekflow</h3>
+
+<p><code>include partekflow</code> should be all that is needed to install, configure and start the partekflowd service. One can also pass parameters in to change the configuration:</p>
+
+<pre class="code puppet"><code class="puppet">class { &#39;partekflow&#39;:
+    config_catalina_tmpdir =&gt; &#39;/home/flow/partek_flow/temp&#39;,
+}
+</code></pre>
+
+<h2>Usage</h2>
+
+<p>All parameters are passed to the main class via either puppet code or hiera. The other classes should not be called directly. Some usage examples are presented below.</p>
+
+<h3>Install and startup partekflowd service</h3>
+
+<pre class="code puppet"><code class="puppet">include partekflow
+</code></pre>
+
+<h3>Change the location of the CATALINA_TMPDIR setting in /etc/partekflow.conf</h3>
+
+<pre class="code puppet"><code class="puppet">class { &#39;partekflow&#39;:
+  config_catalina_tmpdir =&gt; &#39;/home/flow/partek_flow/temp&#39;,
+}
+</code></pre>
+
+<p>or via hiera:</p>
+
+<pre class="code yaml"><code class="yaml">---
+partekflow::config_catalina_tmpdir: &#39;/home/flow/partek_flow/temp&#39;
+</code></pre>
+
+<h3>To use a different template for the partekflow.conf file</h3>
+
+<pre class="code puppet"><code class="puppet">class { &#39;partekflow&#39;:
+  config_template =&gt; &#39;module_name/path/to/template.erb&#39;,
+}
+</code></pre>
+
+<h3>To disable the stable repsitory files but still have them present in /etc/yum.repos.d/</h3>
+
+<pre class="code puppet"><code class="puppet">class { &#39;partekflow&#39;:
+  yumrepo_ensure_stable  =&gt; true,
+  yumrepo_enabled_stable =&gt; false,
+}
+</code></pre>
+
+<h3>To use a local repository mirror instead of the Partek repositories</h3>
+
+<pre class="code puppet"><code class="puppet">class { &#39;partekflow&#39;:
+  yumrepo_baseurl_server       =&gt; &#39;http://yum.example.com&#39;,
+  yumrepo_baseurl_stablepath   =&gt; &#39;/path/to/stable&#39;,
+  yumrepo_baseurl_unstablepath =&gt; &#39;/path/to/unstable&#39;,
+}
+</code></pre>
+
+<h3>To remove the unstable /etc/yum.repos.d/ files</h3>
+
+<pre class="code puppet"><code class="puppet">class { &#39;partekflow&#39;:
+  yumrepo_ensure_unstable =&gt; false,
+}
+</code></pre>
+
+<h2>Reference</h2>
+
+<p>Generated puppet strings documentation with examples is available from <a href="https://millerjl1701.github.io/millerjl1701-partekflow/">https://millerjl1701.github.io/millerjl1701-partekflow/</a>.</p>
+
+<p>It&#39;s also included in the docs/ folder as simple html pages.</p>
+
+<h3>Classes</h3>
+
+<h4>Public Classes</h4>
+
+<ul>
+<li>partekflow: Main class. Contains or calls all other classes or defines.</li>
+</ul>
+
+<h4>Private Classes</h4>
+
+<ul>
+<li>partekflow::config: Handles configuration of the service.</li>
+<li>partekflow::install: Handles the installation of the software.</li>
+<li>partekflow::service: Manages the partekflowd service.</li>
+</ul>
+
+<h3>Parameters</h3>
+
+<p>The partekflow::init class has the following parameters:</p>
+
+<pre class="code ruby"><code class="ruby">Stdlib::Absolutepath        $config_catalina_tmpdir       = &#39;/opt/partek_flow/temp&#39;,
+Stdlib::Absolutepath        $config_file                  = &#39;/etc/partekflow.conf&#39;,
+Stdlib::Absolutepath        $config_installdir            = &#39;/opt/partek_flow&#39;,
+String                      $config_template              = &#39;partekflow/partekflow.conf.erb&#39;,
+String                      $package_ensure               = &#39;present&#39;,
+String                      $package_name                 = &#39;partekflow&#39;,
+Boolean                     $service_enable               = true,
+Enum[&#39;running&#39;, &#39;stopped&#39;]  $service_ensure               = &#39;running&#39;,
+String                      $service_name                 = &#39;partekflowd&#39;,
+String                      $user_comment                 = &#39;Partek Flow daemon&#39;,
+Enum[&#39;present&#39;, &#39;absent&#39;]   $user_ensure                  = &#39;present&#39;,
+Integer[1, 999]             $user_gid                     = 495,
+String                      $user_groupname               = &#39;flowuser&#39;,
+Integer[1, 999]             $user_groupname_gid           = 494,
+Stdlib::Absolutepath        $user_home                    = &#39;/home/flow&#39;,
+Boolean                     $user_managehome              = true,
+String                      $user_name                    = &#39;flow&#39;,
+Stdlib::Absolutepath        $user_shell                   = &#39;/bin/sh&#39;,
+Integer[1, 999]             $user_uid                     = 495,
+Optional[Stdlib::Httpurl]   $yumrepo_baseurl_server       = undef,
+Optional[String]            $yumrepo_baseurl_stablepath   = undef,
+Optional[String]            $yumrepo_baseurl_unstablepath = undef,
+Optional[Boolean]           $yumrepo_enabled_stable       = undef,
+Optional[Boolean]           $yumrepo_enabled_unstable     = undef,
+Optional[Boolean]           $yumrepo_ensure_stable        = undef,
+Optional[Boolean]           $yumrepo_ensure_unstable      = undef,
+Optional[Boolean]           $yumrepo_manage               = undef
+</code></pre>
+
+<h2>Limitations</h2>
+
+<p>This module is written to work with Puppet 4.7 or higher. Hiera 5 data is embedded within the module as well for Puppet 4.9 or higher. The module depends on Puppet 4 data types provided by <a href="https://forge.puppet.com/puppetlabs/stdlib">puppetlabs-stdlib</a> as well as the <a href="https://forge.puppet.com/treydock/gpg_key">treydock-gpg_key</a> module.</p>
+
+<p>Originally written for CentOS 6/7 systems, it could work on other osfamily RedHat distributions. While Partek Flow supports installation on Debian based distributions, this module does not at this time.</p>
+
+<p>This module was written to reflect initial installation and configuration <a href="https://documentation.partek.com/display/FLOWDOC/">documentation provided by Partek</a>. This is not an all inclusive module as there are configuration tasks that need to be done via the web UI to configure portions of the application. If you find some configuration option would be helpful for maintaining the software on your own servers, please submit an issue or pull request. The latest released version of Partek flow when this was written was: 6.0.17.0919.278-1 and serves as a start point for reference. It is possible that this module will work with prior partekflow versions; however, that condition has not been tested.</p>
+
+<p>While the module maintainer supports the puppet code contained in the module, support for the application or performance of the Partek Flow software should be directed toward Partek. The module maintainer does not have a relationship with Partek.</p>
+
+<h2>Development</h2>
+
+<p>Please see the <a href="CONTRIBUTING.md">CONTRIBUTING document</a> for information on how to get started developing code and submit a pull request for this module. While written in an opinionated fashion at the start, over time this can become less and less the case.</p>
+
+<h3>Contributors</h3>
+
+<p>To see who is involved with this module, see the <a href="https://github.com/millerjl1701/millerjl1701-partekflow/graphs/contributors">GitHub list of contributors</a> or the <a href="CONTRIBUTORS">CONTRIBUTORS document</a>.</p>
+</div></div>
+
+      <div id="footer">
+  Generated on Wed Oct 11 20:06:27 2017 by
+  <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
+  0.9.9 (ruby-2.1.9).
+</div>
+
+    </div>
+  </body>
+</html>
