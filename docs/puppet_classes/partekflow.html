@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>
+  Puppet Class: partekflow
+  
+    &mdash; Documentation by YARD 0.9.9
+  
+</title>
+
+  <link rel="stylesheet" href="../css/style.css" type="text/css" charset="utf-8" />
+
+  <link rel="stylesheet" href="../css/common.css" type="text/css" charset="utf-8" />
+
+<script type="text/javascript" charset="utf-8">
+  pathId = "puppet_classes::partekflow";
+  relpath = '../';
+</script>
+
+
+  <script type="text/javascript" charset="utf-8" src="../js/jquery.js"></script>
+
+  <script type="text/javascript" charset="utf-8" src="../js/app.js"></script>
+
+
+  </head>
+  <body>
+    <div class="nav_wrap">
+      <iframe id="nav" src="../puppet_class_list.html?1"></iframe>
+      <div id="resizer"></div>
+    </div>
+
+    <div id="main" tabindex="-1">
+      <div id="header">
+        <div id="menu">
+  
+    <a href="../_index.html">Index (p)</a> &raquo;
+    <span class='title'><span class='object_link'>Puppet Classes</span></span>
+     &raquo; 
+    <span class="title">partekflow</span>
+  
+</div>
+
+        <div id="search">
+  
+    <a class="full_list_link" id="puppet_class_list_link"
+        href="../puppet_class_list.html">
+
+        <svg width="24" height="24">
+          <rect x="0" y="4" width="24" height="4" rx="1" ry="1"></rect>
+          <rect x="0" y="12" width="24" height="4" rx="1" ry="1"></rect>
+          <rect x="0" y="20" width="24" height="4" rx="1" ry="1"></rect>
+        </svg>
+    </a>
+  
+</div>
+        <div class="clear"></div>
+      </div>
+
+      <div id="content"><h1>Puppet Class: partekflow</h1>
+<div class="box_info">
+  
+  
+  <dl>
+    <dt>Defined in:</dt>
+    <dd>
+      manifests/init.pp
+    </dd>
+  </dl>
+</div>
+
+<h2>Overview</h2>
+<div class="docstring">
+  <div class="discussion">
+    <h1>Class: partekflow</h1>
+
+<p>Main class that includes all other classes for manangement of the Partek Flow application.</p>
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>config_catalina_tmpdir</span>
+      
+      
+        <span class='type'>(<tt>Stdlib::Absolutepath</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>&#39;/opt/partek_flow/temp&#39;</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'><p>Specifies the directory for temporary files. Default value: /opt/partek_flow/temp</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>config_file</span>
+      
+      
+        <span class='type'>(<tt>Stdlib::Absolutepath</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>&#39;/etc/partekflow.conf&#39;</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'><p>Specifies the partekflowd configuration file. Default value: /etc/partekflow.conf</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>config_installdir</span>
+      
+      
+        <span class='type'>(<tt>Stdlib::Absolutepath</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>&#39;/opt/partek_flow&#39;</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'><p>Specifies the path to the location of the Partek Flow insallation. Default value: /opt/partek_flow</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>config_template</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>&#39;partekflow/partekflow.conf.erb&#39;</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'><p>Specifies an absolute or relative file path to an ERB template for the config file. Default value: partekflow/partekflow.conf.erb</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>package_ensure</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>&#39;present&#39;</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'><p>Whether to install the partekflow package, and what version. Values: &#39;present&#39;, &#39;latest&#39;, or a specific version number. Default value: present.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>package_name</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>&#39;partekflow&#39;</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'><p>Specifies the name of the package to install. Default value: partekflow.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>service_enable</span>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>true</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'><p>Whether to enable the partekflowd service at boot. Default value: true.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>service_ensure</span>
+      
+      
+        <span class='type'>(<tt>Enum['running', 'stopped']</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>&#39;running&#39;</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'><p>Whether the patrekflowd service should be running. Default value: &#39;running&#39;.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>service_name</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>&#39;partekflowd&#39;</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'><p>Specifies the name of the service to manage. Default value: partekflowd.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>user_comment</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>&#39;Partek Flow daemon&#39;</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'><p>Specifies User ID info for the user account. Default: Partek Flow daemon.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>user_ensure</span>
+      
+      
+        <span class='type'>(<tt>Enum['present', 'absent']</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>&#39;present&#39;</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'><p>Whether the parteflowd user and group should be present. Default value: present.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>user_gid</span>
+      
+      
+        <span class='type'>(<tt>Integer[1, 999]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>495</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'><p>The gid of the group to create for the service account with name of user_name (flow); however this is not the primary group of the user. Default value: 495.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>user_groupname</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>&#39;flowuser&#39;</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'><p>The name of the primary group to create for the partekdflow server. Default value: flowuser</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>user_groupname_gid</span>
+      
+      
+        <span class='type'>(<tt>Integer[1, 999]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>494</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'><p>The gid of the primary group (flowuser) to create for the partekflowd server. Default value: 494.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>user_home</span>
+      
+      
+        <span class='type'>(<tt>Stdlib::Absolutepath</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>&#39;/home/flow&#39;</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'><p>Location of user home directory. Default value: /home/flow</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>user_managehome</span>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>true</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'><p>Whether or not to manage the user home directory. Default value: true.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>user_name</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>&#39;flow&#39;</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'><p>The user used to run the partekflowd server. Default value: flow.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>user_shell</span>
+      
+      
+        <span class='type'>(<tt>Stdlib::Absolutepath</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>&#39;/bin/sh&#39;</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'><p>User shell. Default value: /bin/sh</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>user_uid</span>
+      
+      
+        <span class='type'>(<tt>Integer[1, 999]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>495</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'><p>The uid of the user to create for the partekflowd server. Default value: 495.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>yumrepo_baseurl_server</span>
+      
+      
+        <span class='type'>(<tt>Optional[Stdlib::Httpurl]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'><p>URI of repository server. Default value: undef.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>yumrepo_baseurl_stablepath</span>
+      
+      
+        <span class='type'>(<tt>Optional[String]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'><p>path to the location of the stable repositories not including the architecture portion (i.e. basearch or noarch). Default value: undef.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>yumrepo_baseurl_unstablepath</span>
+      
+      
+        <span class='type'>(<tt>Optional[String]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'><p>path to the location of the unstable package repositories not including the architecture portion (i.e. basearch or noarch). Default value: undef.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>yumrepo_enabled_stable</span>
+      
+      
+        <span class='type'>(<tt>Optional[Boolean]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'><p>Whether or not to enable the stable yumrepo resources. Default value: undef,</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>yumrepo_enabled_unstable</span>
+      
+      
+        <span class='type'>(<tt>Optional[Boolean]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'><p>Whether or not to enable the unstable yumrepo resources. Default value:undef.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>yumrepo_ensure_stable</span>
+      
+      
+        <span class='type'>(<tt>Optional[Boolean]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'><p>Specifies if the stable yumrepos.d config files should be present (true) or absent (false). Default value: undef.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>yumrepo_ensure_unstable</span>
+      
+      
+        <span class='type'>(<tt>Optional[Boolean]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'><p>Specifies if the unstable yumrepos.d config files should be present (true) or absent (false). Default value: undef.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>yumrepo_manage</span>
+      
+      
+        <span class='type'>(<tt>Optional[Boolean]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'><p>Whether or not to manage the package repositories. Default value: undef.</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+
+</div><div class="method_details_list">
+  <table class="source_code">
+    <tr>
+      <td>
+        <pre class="lines">
+
+
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81</pre>
+      </td>
+      <td>
+        <pre class="code"><span class="info file"># File 'manifests/init.pp', line 33</span>
+
+class partekflow (
+  Stdlib::Absolutepath        $config_catalina_tmpdir       = &#39;/opt/partek_flow/temp&#39;,
+  Stdlib::Absolutepath        $config_file                  = &#39;/etc/partekflow.conf&#39;,
+  Stdlib::Absolutepath        $config_installdir            = &#39;/opt/partek_flow&#39;,
+  String                      $config_template              = &#39;partekflow/partekflow.conf.erb&#39;,
+  String                      $package_ensure               = &#39;present&#39;,
+  String                      $package_name                 = &#39;partekflow&#39;,
+  Boolean                     $service_enable               = true,
+  Enum[&#39;running&#39;, &#39;stopped&#39;]  $service_ensure               = &#39;running&#39;,
+  String                      $service_name                 = &#39;partekflowd&#39;,
+  String                      $user_comment                 = &#39;Partek Flow daemon&#39;,
+  Enum[&#39;present&#39;, &#39;absent&#39;]   $user_ensure                  = &#39;present&#39;,
+  Integer[1, 999]             $user_gid                     = 495,
+  String                      $user_groupname               = &#39;flowuser&#39;,
+  Integer[1, 999]             $user_groupname_gid           = 494,
+  Stdlib::Absolutepath        $user_home                    = &#39;/home/flow&#39;,
+  Boolean                     $user_managehome              = true,
+  String                      $user_name                    = &#39;flow&#39;,
+  Stdlib::Absolutepath        $user_shell                   = &#39;/bin/sh&#39;,
+  Integer[1, 999]             $user_uid                     = 495,
+  Optional[Stdlib::Httpurl]   $yumrepo_baseurl_server       = undef,
+  Optional[String]            $yumrepo_baseurl_stablepath   = undef,
+  Optional[String]            $yumrepo_baseurl_unstablepath = undef,
+  Optional[Boolean]           $yumrepo_enabled_stable       = undef,
+  Optional[Boolean]           $yumrepo_enabled_unstable     = undef,
+  Optional[Boolean]           $yumrepo_ensure_stable        = undef,
+  Optional[Boolean]           $yumrepo_ensure_unstable      = undef,
+  Optional[Boolean]           $yumrepo_manage               = undef,
+) {
+
+  # validate parameters here
+
+  case $::operatingsystem {
+    &#39;RedHat&#39;, &#39;CentOS&#39;: {
+
+      contain partekflow::install
+      contain partekflow::config
+      contain partekflow::service
+
+      Class[&#39;::partekflow::install&#39;]
+      -&gt; Class[&#39;partekflow::config&#39;]
+      ~&gt; Class[&#39;partekflow::service&#39;]
+
+    }
+    default: {
+      fail(&quot;${::operatingsystem} not supported&quot;)
+    }
+  }
+}</pre>
+      </td>
+    </tr>
+  </table>
+</div>
+</div>
+
+      <div id="footer">
+  Generated on Wed Oct 11 20:06:27 2017 by
+  <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
+  0.9.9 (ruby-2.1.9).
+</div>
+
+    </div>
+  </body>
+</html>

@@ -21,7 +21,5 @@ Puppetfile.lock
 .yardoc/
 .yardwarns
 Guardfile
-doc/
-docs/
 tmp/
 .DS_Store
