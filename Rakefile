@@ -47,7 +47,7 @@ end
 
 desc "Run yaml-lint"
 task :yaml_lint do
-    sh "yaml-lint data"
+  sh "yaml-lint data"
 end
 
 desc "Run syntax, lint, and spec tests."
