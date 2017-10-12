@@ -1,5 +1,12 @@
 # Change Log
 
+## [v1.3.1](https://github.com/millerjl1701/millerjl1701-partekflow/tree/v1.3.1) 2017-10-11
+[Full Changelog](https://github.com/millerjl1701/millerjl1701-partekflow/compare/v1.3.0...v1.3.1)
+
+**Merged pull requests:**
+
+- Added in yaml-lint support to Gemfile, Rakefile, and .travis.yml [\#4](https://github.com/millerjl1701/millerjl1701-partekflow/pull/4) ([millerjl1701](https://github.com/millerjl1701))
+
 ## [v1.3.0](https://github.com/millerjl1701/millerjl1701-partekflow/tree/v1.3.0) (2017-10-11)
 [Full Changelog](https://github.com/millerjl1701/millerjl1701-partekflow/compare/v1.2.0...v1.3.0)
 
