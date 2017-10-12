@@ -45,6 +45,11 @@ task :contributors do
   system("git log --format='%aN <%aE>' | sort -u > CONTRIBUTORS")
 end
 
+desc "Run yaml-lint"
+task :yaml_lint do
+    sh "yaml-lint data"
+end
+
 desc "Run syntax, lint, and spec tests."
 task :test => [
   :metadata_lint,
